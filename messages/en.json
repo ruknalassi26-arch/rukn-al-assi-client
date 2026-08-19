@@ -1,0 +1,120 @@
+{
+  "Navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "products": "Products",
+    "projects": "Projects",
+    "contact": "Contact Us",
+    "rfq": "Request for Quote",
+    "clients": "Clients",
+    "gallery": "Gallery",
+    "certificates": "Certificates"
+  },
+  "Common": {
+    "learnMore": "Learn More",
+    "viewDetails": "View Details",
+    "viewAll": "View All",
+    "viewAllServices": "Explore All Services",
+    "viewAllProjects": "Explore All Projects",
+    "viewAllClients": "View All Clients",
+    "viewCertifications": "View All Certifications",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "send": "Send Message",
+    "loading": "Loading...",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "required": "Required",
+    "readMore": "Read More",
+    "downloadPDF": "Download PDF",
+    "requestQuote": "Request Quote",
+    "getInTouch": "Get in Touch",
+    "quickLinks": "Quick Links",
+    "allRightsReserved": "All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "Header": {
+    "topBarTagline": "Leading Contracting & Industrial Hydraulic Solutions",
+    "workingHours": "Mon - Sat: 8:00 AM - 5:00 PM",
+    "callUs": "Call Us",
+    "emailUs": "Email Us",
+    "requestQuote": "Request a Quote"
+  },
+  "Home": {
+    "heroEyebrow": "Industrial & Engineering Solutions",
+    "exploreServices": "Explore Services",
+    "viewProjects": "View Projects",
+    "stats": {
+      "experience": "Years of Excellence",
+      "projects": "Projects Completed",
+      "clients": "Satisfied Clients",
+      "engineers": "Certified Engineers"
+    },
+    "about": {
+      "eyebrow": "About Rukn Al Assi",
+      "heading": "Engineering precision built for demanding industrial environments.",
+      "readMore": "Discover Our Story"
+    },
+    "services": {
+      "eyebrow": "Our Capabilities",
+      "heading": "Comprehensive Engineering & Industrial Services",
+      "subheading": "Precision-driven solutions engineered to support heavy industry, infrastructure, and commercial operations."
+    },
+    "projects": {
+      "eyebrow": "Proven Track Record",
+      "heading": "Featured Engineering & Supply Projects",
+      "subheading": "Delivering excellence across mission-critical infrastructure and industrial developments."
+    },
+    "clients": {
+      "eyebrow": "Trusted Partnerships",
+      "heading": "Trusted by Leading Industry Leaders",
+      "subheading": "We collaborate with tier-one enterprises, ministries, and industrial leaders across the region."
+    },
+    "certifications": {
+      "eyebrow": "Quality & Compliance",
+      "heading": "Certified Quality Standards",
+      "subheading": "Committed to international standards of excellence, safety, and quality management."
+    },
+    "cta": {
+      "eyebrow": "Ready to Start?",
+      "heading": "Let's Engineer Your Next Project",
+      "subheading": "Partner with Rukn Al Assi for uncompromised engineering precision, specialized supplies, and turnkey industrial solutions.",
+      "primaryButton": "Request a Detailed Quote",
+      "secondaryButton": "Contact Our Engineering Team"
+    }
+  },
+  "Footer": {
+    "description": "Rukn Al Assi delivers premier contracting, specialized hydraulic engineering, and industrial supply solutions across the region with uncompromised quality.",
+    "contactInfo": "Contact Information",
+    "address": "Erbil, Iraq",
+    "phone": "+964 750 000 11111",
+    "email": "info@ruknalassi.com",
+    "servicesTitle": "Our Services",
+    "companyTitle": "Company",
+    "legalTitle": "Legal & Terms"
+  },
+  "Error": {
+    "somethingWentWrong": "Something went wrong!",
+    "pageNotFound": "Page Not Found",
+    "pageNotFoundDesc": "The page you are looking for does not exist or has been moved.",
+    "serverError": "Internal Server Error",
+    "serverErrorDesc": "We encountered an unexpected error. Please try again later.",
+    "goHome": "Go to Home",
+    "tryAgain": "Try Again"
+  },
+  "RFQ": {
+    "title": "Request for Quotation",
+    "subtitle": "Fill out the form below to request a detailed quote for your project.",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "company": "Company Name",
+    "service": "Service Required",
+    "projectScope": "Project Scope & Details",
+    "attachFile": "Attach File (Specification / Drawing)",
+    "submitSuccess": "Your quotation request has been submitted successfully."
+  }
+}

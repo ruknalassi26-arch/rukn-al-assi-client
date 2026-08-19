@@ -1,0 +1,7 @@
+export enum HomeSectionType {
+  HERO = "HERO",
+  SERVICES_SUMMARY = "SERVICES_SUMMARY",
+  PROJECTS_SUMMARY = "PROJECTS_SUMMARY",
+  STATS = "STATS",
+  CTA = "CTA",
+}

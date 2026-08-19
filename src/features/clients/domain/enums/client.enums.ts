@@ -1,0 +1,5 @@
+export enum ClientSector {
+  GOVERNMENT = "GOVERNMENT",
+  PRIVATE = "PRIVATE",
+  INDUSTRIAL = "INDUSTRIAL",
+}

@@ -1,0 +1,9 @@
+export enum SeoPageType {
+  HOME = "HOME",
+  ABOUT = "ABOUT",
+  SERVICES = "SERVICES",
+  PRODUCTS = "PRODUCTS",
+  PROJECTS = "PROJECTS",
+  CONTACT = "CONTACT",
+  RFQ = "RFQ",
+}

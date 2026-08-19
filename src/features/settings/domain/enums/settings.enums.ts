@@ -1,0 +1,5 @@
+export enum SettingGroup {
+  GENERAL = "GENERAL",
+  CONTACT = "CONTACT",
+  NOTIFICATIONS = "NOTIFICATIONS",
+}

@@ -1,0 +1,5 @@
+export enum ServiceCategory {
+  CONTRACTING = "CONTRACTING",
+  ENGINEERING = "ENGINEERING",
+  SUPPLIES = "SUPPLIES",
+}
