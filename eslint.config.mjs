@@ -11,7 +11,15 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   {
-    ignores: [".next/**", "node_modules/**", "out/**", "build/**"],
+    ignores: [
+      ".next/**",
+      "node_modules/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+      "*.config.js",
+      "*.config.mjs",
+    ],
   },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
@@ -21,6 +29,7 @@ const eslintConfig = [
         "warn",
         { argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
       ],
+      "@typescript-eslint/triple-slash-reference": "off",
       "react/no-unescaped-entities": "off",
     },
   },
