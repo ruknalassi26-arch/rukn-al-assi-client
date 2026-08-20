@@ -1,6 +1,14 @@
-import { ServiceEntity } from "../entities/service.entity";
+import { ServiceEntity, PaginatedServicesEntity } from "../entities/service.entity";
+
+export interface GetServicesParams {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  language?: string;
+}
 
 export interface IServiceRepository {
-  getServices(): Promise<ServiceEntity[]>;
-  getServiceDetails(idOrSlug: string): Promise<ServiceEntity | null>;
+  getServices(params: GetServicesParams): Promise<PaginatedServicesEntity>;
+  getServiceBySlug(slug: string, language: string): Promise<ServiceEntity | null>;
+  getRelatedServices(currentServiceId: string, language: string, limit?: number): Promise<ServiceEntity[]>;
 }

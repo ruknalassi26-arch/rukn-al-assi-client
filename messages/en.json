@@ -154,5 +154,32 @@
     "ctaDescription": "Connect with our engineering specialists today for quotation requests, hydraulic technical consultancies, or project collaboration.",
     "ctaPrimaryButton": "Request a Detailed Quote",
     "ctaSecondaryButton": "Contact Our Team"
+  },
+  "Services": {
+    "eyebrow": "Our Capabilities & Solutions",
+    "title": "Specialized Engineering & Hydraulic Services",
+    "titleShort": "Services",
+    "subtitle": "Precision-engineered contracting, hydraulic maintenance, installation, and turnkey industrial solutions tailored for heavy-duty operational demands.",
+    "searchPlaceholder": "Search services by name or description...",
+    "countLabel": "Services Available",
+    "clearSearch": "Clear Filters",
+    "noServices": "No Services Found",
+    "noServicesDesc": "No services match your search criteria. Try adjusting your search keywords.",
+    "overviewTitle": "Service Overview & Scope",
+    "applications": "Applications & Key Industries",
+    "serviceHighlightsTitle": "Key Highlights",
+    "highlight1": "Certified Technical Precision",
+    "highlight2": "Turnkey Execution & Support",
+    "highlight3": "Rapid Emergency Response",
+    "faqsEyebrow": "FAQ",
+    "faqsTitle": "Frequently Asked Questions",
+    "relatedEyebrow": "Explore More",
+    "relatedTitle": "Related Engineering Services",
+    "requestQuote": "Request a Detailed Quote",
+    "ctaEyebrow": "Custom Industrial Solutions",
+    "ctaHeading": "Need a Specialized Engineering Solution?",
+    "ctaDescription": "Our technical engineering team is ready to assist with customized hydraulic system designs, component overhauls, and industrial maintenance contracts.",
+    "ctaPrimaryButton": "Request Service Quote",
+    "ctaSecondaryButton": "Contact Engineering Team"
   }
 }
