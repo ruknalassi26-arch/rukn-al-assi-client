@@ -14,7 +14,6 @@ interface HeroSectionProps {
   hero: HeroSlideEntity;
 }
 
-
 export function HeroSection({ hero }: HeroSectionProps) {
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
@@ -23,33 +22,50 @@ export function HeroSection({ hero }: HeroSectionProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setPrefersReducedMotion(motionQuery.matches);
 
-    const handler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
-    mediaQuery.addEventListener("change", handler);
-    return () => mediaQuery.removeEventListener("change", handler);
+    const motionHandler = (e: MediaQueryListEvent) => setPrefersReducedMotion(e.matches);
+    motionQuery.addEventListener("change", motionHandler);
+
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    // Attempt video playback on mount
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {
+        // Autoplay policy fallback
+      });
+    }
+
+    return () => {
+      motionQuery.removeEventListener("change", motionHandler);
+      window.removeEventListener("resize", checkMobile);
+    };
   }, []);
 
-  const hasVideo = Boolean(hero.videoUrl);
-  const hasBgImage = Boolean(hero.backgroundImage);
+  const activeVideoUrl = isMobile && hero.videoMobileUrl ? hero.videoMobileUrl : hero.videoUrl;
+  const hasVideo = Boolean(activeVideoUrl);
+  const posterUrl = hero.videoPosterUrl || hero.backgroundImage;
 
   return (
-    <section className="relative w-full min-h-[85vh] lg:min-h-[92vh] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
+    <section className="relative w-full min-h-[88vh] lg:min-h-[92vh] flex items-center justify-center overflow-hidden bg-slate-950 text-white">
       {/* Background Poster Image */}
-      {hasBgImage && (
+      {posterUrl && (
         <div className="absolute inset-0 z-0">
           <Image
-            src={hero.backgroundImage!}
-            alt={hero.title || "Hero Image"}
+            src={posterUrl}
+            alt={hero.title || "Hero Background"}
             fill
             priority
             sizes="100vw"
             className={cn(
               "object-cover object-center transition-opacity duration-1000",
-              hasVideo && videoLoaded && !prefersReducedMotion ? "opacity-0" : "opacity-75 scale-105"
+              hasVideo && videoLoaded && !prefersReducedMotion ? "opacity-0" : "opacity-80 scale-105"
             )}
           />
         </div>
@@ -59,42 +75,37 @@ export function HeroSection({ hero }: HeroSectionProps) {
       {hasVideo && !prefersReducedMotion && (
         <video
           ref={videoRef}
-          src={hero.videoUrl!}
-          poster={hero.backgroundImage || undefined}
+          src={activeVideoUrl!}
+          poster={posterUrl || undefined}
           autoPlay
           muted
           loop
           playsInline
-          onCanPlayThrough={() => setVideoLoaded(true)}
+          preload="auto"
+          onLoadedData={() => setVideoLoaded(true)}
+          onPlaying={() => setVideoLoaded(true)}
           className={cn(
-            "absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-1000",
-            videoLoaded ? "opacity-65" : "opacity-0"
+            "absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-700",
+            videoLoaded ? "opacity-75" : "opacity-40"
           )}
           aria-hidden="true"
         />
       )}
 
       {/* Architectural High-Contrast Gradient Overlays */}
-      <div
-        className={cn(
-          "absolute inset-0 z-1",
-          hasVideo
-            ? "bg-linear-to-t from-slate-950 via-slate-950/60 to-slate-950/40"
-            : "bg-linear-to-t from-slate-950 via-slate-950/80 to-slate-950/60"
-        )}
-      />
+      <div className="absolute inset-0 z-1 bg-linear-to-t from-slate-950 via-slate-950/65 to-slate-950/45" />
       <div className="absolute inset-0 z-1 bg-radial-at-c from-transparent via-slate-950/30 to-slate-950/90" />
 
-      {/* Subtle Industrial Grid Pattern (Rendered ONLY when there is NO video) */}
+      {/* Geometric Blueprint Grid: ONLY shown when there is NO video (i.e. for static image background) */}
       {!hasVideo && (
         <div
-          className="absolute inset-0 z-1 opacity-10 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem]"
+          className="absolute inset-0 z-1 opacity-15 bg-[linear-gradient(to_right,#ffffff_1px,transparent_1px),linear-gradient(to_bottom,#ffffff_1px,transparent_1px)] bg-[size:4rem_4rem]"
           aria-hidden="true"
         />
       )}
 
       {/* Content Container */}
-      <Container className="relative z-10 py-24 sm:py-32 lg:py-36">
+      <Container className="relative z-10 py-28 sm:py-36 lg:py-40">
         <div className="max-w-4xl space-y-8 text-start">
           {/* Eyebrow Pill */}
           {hero.eyebrow && (
@@ -111,14 +122,14 @@ export function HeroSection({ hero }: HeroSectionProps) {
             </h1>
           )}
 
-          {/* Supporting Narrative */}
+          {/* Supporting Description */}
           {(hero.subtitle || hero.body) && (
             <p className="text-lg sm:text-xl lg:text-2xl text-slate-200 leading-relaxed font-normal max-w-3xl">
               {hero.subtitle || hero.body}
             </p>
           )}
 
-          {/* Trust & Certification Highlights */}
+          {/* Trust Highlights */}
           <div className="flex flex-wrap items-center gap-6 pt-2 text-xs sm:text-sm text-slate-300 font-medium">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-amber-400 shrink-0" />
@@ -137,7 +148,7 @@ export function HeroSection({ hero }: HeroSectionProps) {
                   ? "حلول هندسية وتوريدات متكاملة"
                   : locale === "ckb"
                   ? "چارەسەری ئەندازیاری و دابینکاری گشتگیر"
-                  : "Turnkey Industrial Solutions"}
+                  : "Turnkey Industrial & Hydraulic Solutions"}
               </span>
             </div>
           </div>

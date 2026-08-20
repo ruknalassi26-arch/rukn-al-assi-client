@@ -5,6 +5,8 @@ export interface HeroSlideEntity {
   subtitle: string;
   body: string;
   videoUrl?: string | null;
+  videoPosterUrl?: string | null;
+  videoMobileUrl?: string | null;
   backgroundImage?: string | null;
   overlayOpacity: number;
   primaryButtonText: string;
@@ -89,6 +91,37 @@ export interface HomeCtaEntity {
   secondaryButtonUrl: string;
 }
 
+export interface BranchEntity {
+  id: string;
+  name: string;
+  address: string;
+  city?: string;
+  phone?: string;
+  email?: string;
+  whatsapp?: string;
+}
+
+export interface BrandSettingsEntity {
+  siteName: string;
+  companyName: string;
+  tagline: string;
+  logoUrl: string;
+  logoDarkUrl?: string;
+  contactPhone: string;
+  phoneSecondary?: string;
+  contactEmail: string;
+  whatsappNumber: string;
+  address: string;
+  workingHours: string;
+  facebookUrl?: string;
+  twitterUrl?: string;
+  linkedinUrl?: string;
+  instagramUrl?: string;
+  youtubeUrl?: string;
+  branches: BranchEntity[];
+  socialLinks: Array<{ platform: string; url: string }>;
+}
+
 export interface HomePageEntity {
   hero: HeroSlideEntity;
   languages: LanguageEntity[];
@@ -99,14 +132,5 @@ export interface HomePageEntity {
   clients: ClientPreviewEntity[];
   certifications: CertificationPreviewEntity[];
   cta: HomeCtaEntity;
-  brandSettings: {
-    siteName: string;
-    companyName: string;
-    tagline: string;
-    logoUrl: string;
-    contactPhone: string;
-    contactEmail: string;
-    whatsappNumber: string;
-    address: string;
-  };
+  brandSettings: BrandSettingsEntity;
 }

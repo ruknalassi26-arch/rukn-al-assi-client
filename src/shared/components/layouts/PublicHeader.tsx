@@ -1,36 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useTranslations, useLocale } from "next-intl";
-import { Container } from "./Container";
-import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useLocale, useTranslations } from "next-intl";
+import { Container } from "@shared/components/layouts/Container";
+import { LanguageSwitcher } from "@shared/components/layouts/LanguageSwitcher";
 import { Button } from "@shared/components/ui/button";
-import { Phone, Mail, Clock, Menu, X, ArrowRight, ArrowLeft } from "lucide-react";
-import { cn } from "@core/utils/cn";
 import { LanguageEntity } from "@features/home/domain/entities/home.entity";
+import { Menu, X, Phone, Mail, ArrowRight, ArrowLeft } from "lucide-react";
+import { cn } from "@core/utils/cn";
 
 interface PublicHeaderProps {
+  languages?: LanguageEntity[];
   brandSettings?: {
     siteName?: string;
     logoUrl?: string;
     contactPhone?: string;
     contactEmail?: string;
   };
-  languages?: LanguageEntity[];
 }
 
-export function PublicHeader({ brandSettings, languages }: PublicHeaderProps) {
-  const t = useTranslations("Navigation");
-  const tHeader = useTranslations("Header");
-  const locale = useLocale();
-  const pathname = usePathname();
+export function PublicHeader({ languages = [], brandSettings }: PublicHeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const locale = useLocale();
+  const tNav = useTranslations("Navigation");
 
   const isRtl = locale === "ar" || locale === "ckb";
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const siteName = brandSettings?.siteName || process.env.NEXT_PUBLIC_APP_NAME || "Rukn Al Assi";
   const logoUrl = brandSettings?.logoUrl || "";
@@ -38,35 +47,33 @@ export function PublicHeader({ brandSettings, languages }: PublicHeaderProps) {
   const contactEmail = brandSettings?.contactEmail || "";
 
   const navLinks = [
-    { href: `/${locale}`, label: t("home") },
-    { href: `/${locale}/about`, label: t("about") },
-    { href: `/${locale}/services`, label: t("services") },
-    { href: `/${locale}/projects`, label: t("projects") },
-    { href: `/${locale}/products`, label: t("products") },
-    { href: `/${locale}/clients`, label: t("clients") },
-    { href: `/${locale}/certificates`, label: t("certificates") },
-    { href: `/${locale}/contact`, label: t("contact") },
+    { href: `/${locale}`, label: tNav("home") },
+    { href: `/${locale}/about`, label: tNav("about") },
+    { href: `/${locale}/services`, label: tNav("services") },
+    { href: `/${locale}/projects`, label: tNav("projects") },
+    { href: `/${locale}/products`, label: tNav("products") },
+    { href: `/${locale}/clients`, label: tNav("clients") },
+    { href: `/${locale}/certificates`, label: tNav("certificates") },
+    { href: `/${locale}/contact`, label: tNav("contact") },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full">
-      {/* Top Utility Bar (Bechtel / Skanska Architectural Style) */}
-      <div className="hidden lg:block bg-slate-950 text-slate-300 border-b border-white/10 text-xs py-2 transition-colors">
+    <header className="sticky top-0 z-50 w-full transition-all duration-300">
+      {/* Top Utility Bar */}
+      <div className="hidden lg:block bg-slate-950 text-slate-300 text-xs py-2 border-b border-white/10">
         <Container className="flex items-center justify-between">
-          {/* Left: Tagline & Working Hours */}
           <div className="flex items-center gap-6">
-            <span className="font-medium text-slate-300/90 tracking-wide">
-              {tHeader("topBarTagline")}
+            <span className="font-medium text-slate-400">
+              {locale === "ar"
+                ? "الرائدون في الخدمات الهندسية والهيدروليكية"
+                : locale === "ckb"
+                ? "پێشەنگ لە خزمەتگوزارییە ئەندازیاری و هایدرۆلیکییەکان"
+                : "Leaders in Industrial & Hydraulic Engineering"}
             </span>
-            <div className="flex items-center gap-1.5 text-slate-400">
-              <Clock className="size-3.5 text-amber-400" />
-              <span>{tHeader("workingHours")}</span>
-            </div>
           </div>
 
-          {/* Right: Contact Hotline & Language Switcher */}
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-5">
+            <div className="flex items-center gap-4">
               {contactPhone && (
                 <a
                   href={`tel:${contactPhone.replace(/\s+/g, "")}`}
@@ -100,7 +107,14 @@ export function PublicHeader({ brandSettings, languages }: PublicHeaderProps) {
       </div>
 
       {/* Main Navbar */}
-      <div className="bg-background/95 backdrop-blur-xl border-b border-border/80 shadow-xs">
+      <div
+        className={cn(
+          "transition-all duration-300 border-b",
+          isScrolled
+            ? "bg-white/95 backdrop-blur-xl border-border shadow-md"
+            : "bg-white border-border/80 shadow-xs"
+        )}
+      >
         <Container className="flex h-20 items-center justify-between">
           {/* Brand Logo & Title */}
           <Link
@@ -178,7 +192,7 @@ export function PublicHeader({ brandSettings, languages }: PublicHeaderProps) {
               className="hidden sm:inline-flex shadow-md font-bold px-5 h-11 bg-primary hover:bg-primary/90 text-primary-foreground transition-all duration-300 hover:scale-[1.02] group"
             >
               <Link href={`/${locale}/rfq`} className="flex items-center gap-2">
-                <span>{t("rfq")}</span>
+                <span>{tNav("rfq")}</span>
                 <ArrowIcon className="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
@@ -233,7 +247,7 @@ export function PublicHeader({ brandSettings, languages }: PublicHeaderProps) {
           <div className="pt-4 border-t border-border space-y-3">
             <Button asChild className="w-full justify-center text-sm py-5 font-bold shadow-md" size="lg">
               <Link href={`/${locale}/rfq`} onClick={() => setIsMobileMenuOpen(false)}>
-                {t("rfq")}
+                {tNav("rfq")}
               </Link>
             </Button>
 

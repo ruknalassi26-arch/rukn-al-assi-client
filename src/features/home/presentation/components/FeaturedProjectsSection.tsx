@@ -42,14 +42,14 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
           </Button>
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-10">
+        {/* Projects Grid (Max 4) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
           {projects.map((project) => (
             <div
               key={project.id}
               className="group relative rounded-2xl border border-border bg-card overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col"
             >
-              {/* Project Image (Dynamic from backend) */}
+              {/* Project Image */}
               {project.imageUrl ? (
                 <div className="relative aspect-16/10 w-full overflow-hidden bg-muted">
                   <Image

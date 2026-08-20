@@ -3,7 +3,7 @@
 import React from "react";
 import { Container } from "@shared/components/layouts/Container";
 import { CompanyStatEntity } from "../../domain/entities/home.entity";
-import { Clock, Briefcase, Users, ShieldCheck } from "lucide-react";
+import { Clock, Briefcase, Users, ShieldCheck, Award, Wrench } from "lucide-react";
 
 interface CompanyStatsSectionProps {
   stats: CompanyStatEntity[];
@@ -13,20 +13,24 @@ export function CompanyStatsSection({ stats }: CompanyStatsSectionProps) {
   if (!stats || stats.length === 0) return null;
 
   const getIcon = (name?: string) => {
-    switch (name) {
-      case "Clock":
+    switch (name?.toLowerCase()) {
+      case "clock":
         return <Clock className="size-6 text-primary" />;
-      case "Briefcase":
+      case "briefcase":
         return <Briefcase className="size-6 text-primary" />;
-      case "Users":
+      case "users":
         return <Users className="size-6 text-primary" />;
+      case "award":
+        return <Award className="size-6 text-primary" />;
+      case "wrench":
+        return <Wrench className="size-6 text-primary" />;
       default:
         return <ShieldCheck className="size-6 text-primary" />;
     }
   };
 
   return (
-    <section className="relative z-20 border-b border-border bg-card shadow-2xs">
+    <section className="relative z-20 border-b border-border bg-card shadow-xs">
       <Container className="py-12 sm:py-16">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 divide-y sm:divide-y-0 sm:divide-x sm:divide-border rtl:sm:divide-x-reverse">
           {stats.map((stat) => (

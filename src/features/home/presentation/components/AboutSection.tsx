@@ -49,7 +49,7 @@ export function AboutSection({ about }: AboutSectionProps) {
             {(about.mission || about.vision) && (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
                 {about.mission && (
-                  <div className="p-4 rounded-xl bg-card border border-border space-y-2">
+                  <div className="p-5 rounded-xl bg-card border border-border space-y-2">
                     <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
                       <Target className="size-4" />
                       <span>{locale === "ar" ? "مهمتنا" : locale === "ckb" ? "ئەرکی ئێمە" : "Our Mission"}</span>
@@ -61,7 +61,7 @@ export function AboutSection({ about }: AboutSectionProps) {
                 )}
 
                 {about.vision && (
-                  <div className="p-4 rounded-xl bg-card border border-border space-y-2">
+                  <div className="p-5 rounded-xl bg-card border border-border space-y-2">
                     <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
                       <Eye className="size-4" />
                       <span>{locale === "ar" ? "رؤيتنا" : locale === "ckb" ? "دیدگای ئێمە" : "Our Vision"}</span>
@@ -87,7 +87,7 @@ export function AboutSection({ about }: AboutSectionProps) {
             )}
           </div>
 
-          {/* Media Column (Only rendered if dynamic image is provided) */}
+          {/* Media Column */}
           {about.imageUrl && (
             <div className="lg:col-span-5 relative">
               <div className="relative aspect-4/3 sm:aspect-square w-full rounded-2xl overflow-hidden border border-border bg-muted shadow-xl">

@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { routing, Locale } from "@core/config/i18n";
 import { CoreProviders } from "@core/providers";
 import { isRTL } from "@core/constants/locales";
+import "../globals.css";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
