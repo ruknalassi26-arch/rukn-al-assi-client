@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { ServiceEntity } from "../../domain/entities/service.entity";
-import { ArrowRight, ArrowLeft, Wrench, Shield, CheckCircle } from "lucide-react";
+import { ArrowRight, ArrowLeft, Wrench, Shield } from "lucide-react";
 
 interface ServiceCardProps {
   service: ServiceEntity;
