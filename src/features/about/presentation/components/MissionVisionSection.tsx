@@ -3,7 +3,7 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
-import { Compass, Target, ArrowUpRight } from "lucide-react";
+import { Target, Compass } from "lucide-react";
 
 interface MissionVisionSectionProps {
   mission?: string;
@@ -13,65 +13,57 @@ interface MissionVisionSectionProps {
 export function MissionVisionSection({ mission, vision }: MissionVisionSectionProps) {
   const t = useTranslations("About");
 
+  if (!mission && !vision) return null;
+
   return (
-    <section className="py-20 lg:py-24 bg-muted/30 border-b border-border">
+    <section className="py-16 lg:py-20 bg-muted/20 border-b border-border">
       <Container>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
           {/* Mission Card */}
-          <div className="relative p-8 sm:p-10 rounded-3xl bg-card border border-border hover:border-primary/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 group">
-            <div className="space-y-6">
+          {mission && (
+            <div className="relative p-6 sm:p-8 rounded-3xl bg-card border border-border border-t-4 border-t-primary shadow-xs space-y-4">
               <div className="flex items-center justify-between">
-                <div className="size-14 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300">
-                  <Target className="size-7" />
+                <div className="size-11 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+                  <Target className="size-5.5" />
                 </div>
-                <span className="text-xs font-mono font-bold uppercase tracking-widest text-primary bg-primary/10 px-3 py-1 rounded-full">
+                <span className="text-xs font-mono font-bold uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
                   01
                 </span>
               </div>
 
-              <div className="space-y-3">
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground group-hover:text-primary transition-colors">
+              <div className="space-y-2">
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                   {t("missionTitle")}
                 </h3>
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  {mission || t("missionFallback")}
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {mission}
                 </p>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-border/60 flex items-center gap-2 text-xs font-bold text-primary">
-              <span>{t("missionBadge")}</span>
-              <ArrowUpRight className="size-4 opacity-70" />
-            </div>
-          </div>
+          )}
 
           {/* Vision Card */}
-          <div className="relative p-8 sm:p-10 rounded-3xl bg-card border border-border hover:border-amber-500/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between space-y-6 group">
-            <div className="space-y-6">
+          {vision && (
+            <div className="relative p-6 sm:p-8 rounded-3xl bg-card border border-border border-t-4 border-t-amber-500 shadow-xs space-y-4">
               <div className="flex items-center justify-between">
-                <div className="size-14 rounded-2xl bg-amber-500/10 flex items-center justify-center text-amber-500 group-hover:scale-110 transition-transform duration-300">
-                  <Compass className="size-7" />
+                <div className="size-11 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600">
+                  <Compass className="size-5.5" />
                 </div>
-                <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-600 bg-amber-500/10 px-3 py-1 rounded-full">
+                <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-600 bg-amber-500/10 px-2.5 py-0.5 rounded-full">
                   02
                 </span>
               </div>
 
-              <div className="space-y-3">
-                <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground group-hover:text-amber-600 transition-colors">
+              <div className="space-y-2">
+                <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
                   {t("visionTitle")}
                 </h3>
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  {vision || t("visionFallback")}
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {vision}
                 </p>
               </div>
             </div>
-
-            <div className="pt-4 border-t border-border/60 flex items-center gap-2 text-xs font-bold text-amber-600">
-              <span>{t("visionBadge")}</span>
-              <ArrowUpRight className="size-4 opacity-70" />
-            </div>
-          </div>
+          )}
         </div>
       </Container>
     </section>
