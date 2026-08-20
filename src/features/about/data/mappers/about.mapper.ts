@@ -4,6 +4,8 @@ import { PublicAboutPageRpcDto } from "../dto/about.dto";
 export class AboutMapper {
   static toEntity(dto: PublicAboutPageRpcDto): AboutPageEntity {
     return {
+      heroImage: dto.heroImage,
+      storyImage: dto.storyImage,
       company: {
         id: dto.company?.id,
         history: dto.company?.history || "",

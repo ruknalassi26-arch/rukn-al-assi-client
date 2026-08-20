@@ -7,7 +7,11 @@ import { useLocale, useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
 import { Wrench, ChevronRight, ChevronLeft, CheckCircle2 } from "lucide-react";
 
-export function ServicesHeroSection() {
+interface ServicesHeroSectionProps {
+  heroImageUrl?: string;
+}
+
+export function ServicesHeroSection({ heroImageUrl }: ServicesHeroSectionProps) {
   const t = useTranslations("Services");
   const tCommon = useTranslations("Common");
   const locale = useLocale();
@@ -16,18 +20,20 @@ export function ServicesHeroSection() {
 
   return (
     <section className="relative w-full py-20 lg:py-28 overflow-hidden bg-slate-950 text-white border-b border-white/10">
-      {/* Background Hero Image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/about/1787128956167-pexels-tuba-sen-2151030023-37707297.jpg"
-          alt="Industrial Engineering Services"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover opacity-20 filter grayscale contrast-125"
-        />
-        <div className="absolute inset-0 bg-radial-at-c from-slate-950/70 via-slate-950/90 to-slate-950" />
-      </div>
+      {/* Dynamic Background Image from Supabase */}
+      {heroImageUrl ? (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={heroImageUrl}
+            alt="Industrial Engineering Services"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-20 filter grayscale contrast-125"
+          />
+          <div className="absolute inset-0 bg-radial-at-c from-slate-950/70 via-slate-950/90 to-slate-950" />
+        </div>
+      ) : null}
 
       {/* Blueprint Grid Overlay */}
       <div

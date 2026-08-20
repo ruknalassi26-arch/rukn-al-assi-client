@@ -18,11 +18,14 @@ interface AboutViewProps {
 export function AboutView({ aboutData }: AboutViewProps) {
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* 1. About Hero */}
-      <AboutHeroSection />
+      {/* 1. About Hero with Dynamic Image */}
+      <AboutHeroSection heroImageUrl={aboutData.heroImage} />
 
-      {/* 2. Company Story & History */}
-      <CompanyStorySection history={aboutData.company?.history} />
+      {/* 2. Company Story & History with Dynamic Image */}
+      <CompanyStorySection
+        history={aboutData.company?.history}
+        imageUrl={aboutData.storyImage || aboutData.heroImage}
+      />
 
       {/* 3. Mission & Vision */}
       <MissionVisionSection

@@ -2,18 +2,19 @@
 
 import React from "react";
 import Image from "next/image";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
 import { SectionHeading } from "@shared/components/ui/SectionHeading";
-import { Award, ShieldCheck, CheckCircle } from "lucide-react";
+import { Award, ShieldCheck, CheckCircle, Building } from "lucide-react";
 
 interface CompanyStorySectionProps {
   history?: string;
+  imageUrl?: string;
 }
 
-export function CompanyStorySection({ history }: CompanyStorySectionProps) {
+export function CompanyStorySection({ history, imageUrl }: CompanyStorySectionProps) {
   const t = useTranslations("About");
-  const locale = useLocale();
+  const tCommon = useTranslations("Common");
 
   return (
     <section className="py-20 lg:py-28 bg-background border-b border-border">
@@ -79,18 +80,23 @@ export function CompanyStorySection({ history }: CompanyStorySectionProps) {
             </div>
           </div>
 
-          {/* Right Column (5 cols): High-Res Image with One-Sided Accent Border */}
+          {/* Right Column (5 cols): Dynamic Image with One-Sided Accent Border */}
           <div className="lg:col-span-5 relative">
             <div className="relative mx-auto max-w-md lg:max-w-none">
-              {/* Image Frame with One-Sided Bold Accent Border */}
               <div className="relative aspect-4/3 sm:aspect-5/4 lg:aspect-4/5 w-full rounded-3xl overflow-hidden bg-muted shadow-2xl border border-border border-s-6 border-s-primary group">
-                <Image
-                  src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/about/1787128956167-pexels-tuba-sen-2151030023-37707297.jpg"
-                  alt="Rukn Al Assi Industrial Engineering"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
+                {imageUrl ? (
+                  <Image
+                    src={imageUrl}
+                    alt="Rukn Al Assi Industrial Engineering"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 40vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                ) : (
+                  <div className="size-full flex items-center justify-center bg-slate-900 text-slate-500">
+                    <Building className="size-16 opacity-40" />
+                  </div>
+                )}
                 <div className="absolute inset-0 bg-linear-to-t from-slate-950/70 via-slate-950/10 to-transparent" />
               </div>
 
@@ -99,15 +105,11 @@ export function CompanyStorySection({ history }: CompanyStorySectionProps) {
                 <div className="flex items-center gap-2 text-amber-400">
                   <ShieldCheck className="size-4" />
                   <span className="text-xs font-bold uppercase tracking-wider">
-                    {locale === "ar" ? "اعتماد وجودة" : locale === "ckb" ? "متمانە و کوالێتی" : "Certified"}
+                    {tCommon("certified")}
                   </span>
                 </div>
                 <p className="text-xs text-slate-300 font-medium leading-snug">
-                  {locale === "ar"
-                    ? "حلول هندسية وتجهيزات صناعية متكاملة"
-                    : locale === "ckb"
-                    ? "چارەسەری ئەندازیاری و دابینکاری پیشەسازی"
-                    : "Precision-driven turnkey industrial solutions"}
+                  {tCommon("certifiedDesc")}
                 </p>
               </div>
             </div>

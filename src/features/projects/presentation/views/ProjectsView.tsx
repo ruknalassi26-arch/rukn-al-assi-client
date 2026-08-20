@@ -8,37 +8,42 @@ import { ProjectsGrid } from "../components/ProjectsGrid";
 import { ProjectsPagination } from "../components/ProjectsPagination";
 import { ProjectsClientsSection } from "../components/ProjectsClientsSection";
 import { ProjectsCtaSection } from "../components/ProjectsCtaSection";
-import { Container } from "@shared/components/layouts/Container";
 
 interface ProjectsViewProps {
   projectsData: PaginatedProjectsEntity;
 }
 
 export function ProjectsView({ projectsData }: ProjectsViewProps) {
+  // Use first project cover image dynamically if available
+  const heroImage =
+    projectsData.items.length > 0 && projectsData.items[0].coverImage
+      ? projectsData.items[0].coverImage
+      : undefined;
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* 1. Projects Hero */}
-      <ProjectsHeroSection />
+      {/* 1. Hero Section with dynamic background */}
+      <ProjectsHeroSection heroImageUrl={heroImage} />
 
-      {/* 2, 3, 4, 5. Search, Category Filter, Projects Grid, Pagination */}
-      <section className="py-16 lg:py-24 bg-background border-b border-border">
-        <Container className="space-y-10">
-          <ProjectsFilterBar
-            total={projectsData.total}
-            categories={projectsData.categories}
-          />
-          <ProjectsGrid projects={projectsData.items} />
-          <ProjectsPagination
-            page={projectsData.page}
-            totalPages={projectsData.totalPages}
-          />
-        </Container>
-      </section>
+      {/* 2. Filter & Search Controls */}
+      <ProjectsFilterBar
+        categories={projectsData.categories}
+        total={projectsData.total}
+      />
 
-      {/* 6. Trusted Clients Marquee */}
+      {/* 3. Projects Grid */}
+      <ProjectsGrid projects={projectsData.items} />
+
+      {/* 4. Pagination */}
+      <ProjectsPagination
+        page={projectsData.page}
+        totalPages={projectsData.totalPages}
+      />
+
+      {/* 5. Trusted Clients / Partners */}
       <ProjectsClientsSection clients={projectsData.clients} />
 
-      {/* 7. Request Quote CTA */}
+      {/* 6. Request a Quote CTA */}
       <ProjectsCtaSection />
     </div>
   );

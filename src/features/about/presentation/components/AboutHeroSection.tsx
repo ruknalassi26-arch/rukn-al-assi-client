@@ -5,28 +5,35 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
-import { Shield, ChevronRight, ChevronLeft, CheckCircle2 } from "lucide-react";
+import { Award, ChevronRight, ChevronLeft, CheckCircle2 } from "lucide-react";
 
-export function AboutHeroSection() {
+interface AboutHeroSectionProps {
+  heroImageUrl?: string;
+}
+
+export function AboutHeroSection({ heroImageUrl }: AboutHeroSectionProps) {
   const t = useTranslations("About");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
   const Chevron = isRtl ? ChevronLeft : ChevronRight;
 
   return (
     <section className="relative w-full py-20 lg:py-28 overflow-hidden bg-slate-950 text-white border-b border-white/10">
-      {/* Background Architectural Image with Dark Gradient Overlay */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/about/1787128956167-pexels-tuba-sen-2151030023-37707297.jpg"
-          alt="Rukn Al Assi Industrial Facility"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover opacity-20 filter grayscale contrast-125"
-        />
-        <div className="absolute inset-0 bg-radial-at-c from-slate-950/70 via-slate-950/90 to-slate-950" />
-      </div>
+      {/* Dynamic Background Image from Supabase */}
+      {heroImageUrl ? (
+        <div className="absolute inset-0 z-0">
+          <Image
+            src={heroImageUrl}
+            alt="Rukn Al Assi Engineering Heritage"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover opacity-20 filter grayscale contrast-125"
+          />
+          <div className="absolute inset-0 bg-radial-at-c from-slate-950/70 via-slate-950/90 to-slate-950" />
+        </div>
+      ) : null}
 
       {/* Blueprint Grid Overlay */}
       <div
@@ -39,49 +46,37 @@ export function AboutHeroSection() {
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium tracking-wide">
             <Link href={`/${locale}`} className="hover:text-amber-400 transition-colors">
-              {locale === "ar" ? "الرئيسية" : locale === "ckb" ? "سەرەکی" : "Home"}
+              {tCommon("home")}
             </Link>
             <Chevron className="size-3.5 opacity-60" />
-            <span className="text-amber-400 font-semibold">{t("eyebrow")}</span>
+            <span className="text-amber-400 font-semibold">{t("heroEyebrow")}</span>
           </nav>
 
           {/* Eyebrow Badge */}
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur-md shadow-sm">
-            <Shield className="size-3.5" />
-            <span>{t("eyebrow")}</span>
+            <Award className="size-3.5" />
+            <span>{t("heroEyebrow")}</span>
           </div>
 
           {/* Heading */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-tight">
-            {t("title")}
+            {t("heroTitle")}
           </h1>
 
           {/* Subtitle */}
           <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal max-w-3xl">
-            {t("subtitle")}
+            {t("heroSubtitle")}
           </p>
 
           {/* Trust Highlights */}
           <div className="flex flex-wrap items-center gap-6 pt-4 text-xs sm:text-sm text-slate-300 font-medium border-t border-white/10">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-amber-400 shrink-0" />
-              <span>
-                {locale === "ar"
-                  ? "معايير هندسية معتمدة دولياً"
-                  : locale === "ckb"
-                  ? "ستانداردی ئەندازیاری باوەڕپێکراو"
-                  : "Certified International Engineering Standards"}
-              </span>
+              <span>{t("heroHighlight1")}</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-amber-400 shrink-0" />
-              <span>
-                {locale === "ar"
-                  ? "خبرة عريقة في التوريدات والمعدات الصناعية"
-                  : locale === "ckb"
-                  ? "ئەزموونی دەوڵەمەند لە کەرەستەی پیشەسازی"
-                  : "Industrial Supply & Hydraulics Expertise"}
-              </span>
+              <span>{t("heroHighlight2")}</span>
             </div>
           </div>
         </div>

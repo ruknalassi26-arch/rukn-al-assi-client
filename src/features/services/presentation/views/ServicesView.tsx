@@ -8,29 +8,34 @@ import { ServicesGrid } from "../components/ServicesGrid";
 import { ServicesPagination } from "../components/ServicesPagination";
 import { ServicesClientsSection } from "../components/ServicesClientsSection";
 import { ServicesCtaSection } from "../components/ServicesCtaSection";
-import { Container } from "@shared/components/layouts/Container";
 
 interface ServicesViewProps {
   servicesData: PaginatedServicesEntity;
 }
 
 export function ServicesView({ servicesData }: ServicesViewProps) {
+  // Use first service hero image dynamically if available
+  const heroImage =
+    servicesData.items.length > 0 && servicesData.items[0].heroImageUrl
+      ? servicesData.items[0].heroImageUrl
+      : undefined;
+
   return (
     <div className="flex flex-col min-h-screen bg-background">
-      {/* 1. Services Hero */}
-      <ServicesHeroSection />
+      {/* 1. Hero Section with dynamic background */}
+      <ServicesHeroSection heroImageUrl={heroImage} />
 
-      {/* 2, 3, 4. Search / Filters, Services Grid, Pagination */}
-      <section className="py-16 lg:py-24 bg-background border-b border-border">
-        <Container className="space-y-10">
-          <ServicesFilterBar total={servicesData.total} />
-          <ServicesGrid services={servicesData.items} />
-          <ServicesPagination
-            page={servicesData.page}
-            totalPages={servicesData.totalPages}
-          />
-        </Container>
-      </section>
+      {/* 2. Filter & Search Controls */}
+      <ServicesFilterBar total={servicesData.total} />
+
+      {/* 3. Services Grid */}
+      <ServicesGrid services={servicesData.items} />
+
+      {/* 4. Pagination */}
+      <ServicesPagination
+        page={servicesData.page}
+        totalPages={servicesData.totalPages}
+      />
 
       {/* 5. Trusted Clients / Partners */}
       <ServicesClientsSection clients={servicesData.clients} />
