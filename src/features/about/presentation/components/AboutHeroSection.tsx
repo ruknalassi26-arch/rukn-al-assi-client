@@ -18,7 +18,7 @@ export function AboutHeroSection() {
       {/* Background Architectural Image with Dark Gradient Overlay */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/hero-images/1787126856648-pexels-davidmcelwee-12228684.jpg"
+          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/about/1787128956167-pexels-tuba-sen-2151030023-37707297.jpg"
           alt="Rukn Al Assi Industrial Facility"
           fill
           priority

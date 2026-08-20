@@ -2,8 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { SupabaseProjectRepository } from "@features/projects/data/repositories/supabase-project.repository";
-import { GetProjectBySlugUseCase } from "@features/projects/domain/usecases/get-project-by-slug.usecase";
-import { GetRelatedProjectsUseCase } from "@features/projects/domain/usecases/get-related-projects.usecase";
+import { GetProjectDetailUseCase } from "@features/projects/domain/usecases/get-project-detail.usecase";
 import { ProjectDetailView } from "@features/projects/presentation/views/ProjectDetailView";
 
 interface ProjectDetailPageProps {
@@ -15,16 +14,13 @@ export default async function ProjectDetailPage({ params }: ProjectDetailPagePro
   setRequestLocale(locale);
 
   const repository = new SupabaseProjectRepository();
-  const getProjectUseCase = new GetProjectBySlugUseCase(repository);
-  const getRelatedUseCase = new GetRelatedProjectsUseCase(repository);
+  const useCase = new GetProjectDetailUseCase(repository);
 
-  const project = await getProjectUseCase.execute(slug, locale);
+  const data = await useCase.execute(slug, locale);
 
-  if (!project) {
+  if (!data || !data.project) {
     notFound();
   }
 
-  const relatedProjects = await getRelatedUseCase.execute(project.id, project.categoryId, locale, 3);
-
-  return <ProjectDetailView project={project} relatedProjects={relatedProjects} />;
+  return <ProjectDetailView data={data} />;
 }

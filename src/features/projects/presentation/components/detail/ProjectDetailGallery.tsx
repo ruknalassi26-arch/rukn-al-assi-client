@@ -20,6 +20,7 @@ interface ProjectDetailGalleryProps {
 
 export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
   const t = useTranslations("Projects");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
 
@@ -83,20 +84,13 @@ export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
           <SectionHeading
             eyebrow="Portfolio Showcase"
             title={t("galleryTitle")}
-            description={
-              locale === "ar"
-                ? "انقر على أي صورة لتكبيرها واستعراضها بملء الشاشة مع تفاصيل المشروع."
-                : locale === "ckb"
-                ? "کلیک لەسەر هەر وێنەیەک بکە بۆ بینینی بە تەواوی شاشە."
-                : "Click on any photograph to inspect construction details in high-resolution full-screen mode."
-            }
+            description={tCommon("gallerySubtitle")}
             align="center"
           />
 
           {/* Construction-Standard Asymmetrical Masonry Grid */}
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             {validImages.map((img, idx) => {
-              // Layout math: first image or every 5th image gets panoramic 8-col span
               const isPanoramic = idx === 0 || idx % 5 === 0;
               const colSpan = isPanoramic ? "md:col-span-8 aspect-16/10" : "md:col-span-4 aspect-4/3";
 
@@ -139,7 +133,7 @@ export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
                   {/* Floating Caption on Hover */}
                   <div className="absolute bottom-4 start-4 end-16 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                     <span className="text-xs font-semibold text-slate-200 truncate block">
-                      {locale === "ar" ? "اضغط للتكبير بملء الشاشة" : locale === "ckb" ? "کلیک بکە بۆ تەواوی شاشە" : "Click to view full screen"}
+                      {tCommon("clickToViewFullScreen")}
                     </span>
                   </div>
                 </div>
@@ -149,9 +143,7 @@ export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
         </Container>
       </section>
 
-      {/* ========================================================================= */}
-      {/* HIGH-END CONSTRUCTION LIGHTBOX FULL-SCREEN MODAL                         */}
-      {/* ========================================================================= */}
+      {/* Lightbox Modal */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-2xl flex flex-col justify-between p-4 sm:p-6 text-white animate-in fade-in duration-300"
@@ -169,7 +161,7 @@ export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
                   {currentIndex + 1} / {validImages.length}
                 </span>
                 <span className="text-xs text-slate-400 ms-2">
-                  {locale === "ar" ? "معرض الصور عالي الدقة" : locale === "ckb" ? "وێنەی کوالێتی بەرز" : "High-Resolution Showcase"}
+                  {tCommon("highResShowcase")}
                 </span>
               </div>
             </div>
@@ -179,7 +171,7 @@ export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
                 type="button"
                 onClick={closeLightbox}
                 className="size-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-                aria-label="Close Fullscreen View"
+                aria-label={tCommon("close")}
               >
                 <X className="size-5" />
               </button>
@@ -188,17 +180,15 @@ export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
 
           {/* Center Stage: Main Image & Floating Arrows */}
           <div className="relative flex-1 flex items-center justify-center my-4 overflow-hidden">
-            {/* Previous Button */}
             <button
               type="button"
               onClick={showPrev}
               className="absolute start-2 sm:start-6 z-30 size-12 sm:size-14 rounded-full bg-slate-900/80 hover:bg-primary text-white border border-white/15 flex items-center justify-center backdrop-blur-md shadow-2xl transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              aria-label="Previous image"
+              aria-label="Previous photo"
             >
               <PrevIcon className="size-6" />
             </button>
 
-            {/* Current Active Image */}
             <div className="relative w-full h-full max-h-[75vh] max-w-6xl mx-auto flex items-center justify-center">
               <Image
                 src={validImages[currentIndex].imageUrl}
@@ -210,12 +200,11 @@ export function ProjectDetailGallery({ images }: ProjectDetailGalleryProps) {
               />
             </div>
 
-            {/* Next Button */}
             <button
               type="button"
               onClick={showNext}
               className="absolute end-2 sm:end-6 z-30 size-12 sm:size-14 rounded-full bg-slate-900/80 hover:bg-primary text-white border border-white/15 flex items-center justify-center backdrop-blur-md shadow-2xl transition-all hover:scale-110 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              aria-label="Next image"
+              aria-label="Next photo"
             >
               <NextIcon className="size-6" />
             </button>

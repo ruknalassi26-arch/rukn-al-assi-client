@@ -34,14 +34,25 @@
     "quickLinks": "Quick Links",
     "allRightsReserved": "All rights reserved.",
     "privacyPolicy": "Privacy Policy",
-    "termsOfService": "Terms of Service"
+    "termsOfService": "Terms of Service",
+    "home": "Home",
+    "close": "Close",
+    "certified": "Certified Quality",
+    "certifiedDesc": "Highest industrial precision and engineering compliance",
+    "clickToViewFullScreen": "Click to view full screen",
+    "highResShowcase": "High-Resolution Showcase",
+    "gallerySubtitle": "Click on any photograph to inspect construction details in high-resolution full-screen mode.",
+    "ourMission": "Our Mission",
+    "ourVision": "Our Vision"
   },
   "Header": {
     "topBarTagline": "Leading Contracting & Industrial Hydraulic Solutions",
     "workingHours": "Mon - Sat: 8:00 AM - 5:00 PM",
-    "callUs": "Call Us",
+    "callUs": "Call Engineering Team",
     "emailUs": "Email Us",
-    "requestQuote": "Request a Quote"
+    "requestQuote": "Request a Quote",
+    "tagline": "Specialized Industrial Contracting & Hydraulic Solutions",
+    "quoteButton": "Request a Quote"
   },
   "Home": {
     "heroEyebrow": "Industrial & Engineering Solutions",
@@ -84,7 +95,9 @@
       "subheading": "Partner with Rukn Al Assi for uncompromised engineering precision, specialized supplies, and turnkey industrial solutions.",
       "primaryButton": "Request a Detailed Quote",
       "secondaryButton": "Contact Our Engineering Team"
-    }
+    },
+    "heroHighlight1": "Heavy Engineering & Contracting",
+    "heroHighlight2": "Turnkey Hydraulic Solutions"
   },
   "Footer": {
     "description": "Rukn Al Assi delivers premier contracting, specialized hydraulic engineering, and industrial supply solutions across the region with uncompromised quality.",
@@ -94,7 +107,8 @@
     "email": "info@ruknalassi.com",
     "servicesTitle": "Our Services",
     "companyTitle": "Company",
-    "legalTitle": "Legal & Terms"
+    "legalTitle": "Legal & Terms",
+    "allRightsReserved": "All rights reserved."
   },
   "Error": {
     "somethingWentWrong": "Something went wrong!",
@@ -183,7 +197,9 @@
     "ctaSecondaryButton": "Contact Engineering Team",
     "clientsEyebrow": "Trusted Partnerships",
     "clientsHeading": "Trusted by Leading Industry Organizations",
-    "clientsSubheading": "We collaborate with tier-one contractors, ministries, and industrial leaders across the region."
+    "clientsSubheading": "We collaborate with tier-one contractors, ministries, and industrial leaders across the region.",
+    "heroHighlight1": "Certified Hydraulic Commissioning & Maintenance",
+    "heroHighlight2": "Expert Engineering Specialists & Advanced Tools"
   },
   "Projects": {
     "eyebrow": "Proven Track Record",
@@ -216,6 +232,8 @@
     "ctaHeading": "Ready to Discuss Your Next Engineering Project?",
     "ctaDescription": "Connect with our turnkey project specialists to review technical specifications, timelines, and quotation estimates.",
     "ctaPrimaryButton": "Request Detailed Quote",
-    "ctaSecondaryButton": "Contact Engineering Team"
+    "ctaSecondaryButton": "Contact Engineering Team",
+    "heroHighlight1": "Turnkey Heavy Industrial Infrastructure",
+    "heroHighlight2": "Executed Under International ISO Standards"
   }
 }

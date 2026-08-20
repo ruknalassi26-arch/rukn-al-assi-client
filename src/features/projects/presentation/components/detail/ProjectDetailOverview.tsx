@@ -3,54 +3,68 @@
 import React from "react";
 import { useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
-import { ProjectEntity } from "../../../domain/entities/project.entity";
+import { ProjectDetailInfoEntity } from "../../../domain/entities/project-detail.entity";
+import { ProjectCategoryEntity } from "../../../domain/entities/project.entity";
 import { ShieldAlert, Lightbulb } from "lucide-react";
 
 interface ProjectDetailOverviewProps {
-  project: ProjectEntity;
+  project: ProjectDetailInfoEntity;
+  category: ProjectCategoryEntity | null;
 }
 
-export function ProjectDetailOverview({ project }: ProjectDetailOverviewProps) {
+export function ProjectDetailOverview({ project, category }: ProjectDetailOverviewProps) {
   const t = useTranslations("Projects");
+
+  const hasChallenge = Boolean(project.challenge && project.challenge.trim().length > 0);
+  const hasSolution = Boolean(project.solution && project.solution.trim().length > 0);
 
   return (
     <section className="py-16 lg:py-24 bg-background border-b border-border">
-      <Container>
+      <Container className="space-y-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Main Narrative, Challenge & Solution (8 cols) */}
-          <div className="lg:col-span-8 space-y-8 text-start">
-            <div className="space-y-4">
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+          {/* Main Description (8 cols) */}
+          <div className="lg:col-span-8 space-y-6 text-start">
+            <div className="space-y-3">
+              <span className="text-xs font-bold text-primary uppercase tracking-wider">
+                Engineering Execution
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
                 {t("overviewTitle")}
               </h2>
+            </div>
+
+            {project.description ? (
               <div className="prose prose-slate max-w-none text-base sm:text-lg text-foreground/90 leading-relaxed font-normal whitespace-pre-line">
                 {project.description}
               </div>
-            </div>
+            ) : null}
 
-            {/* Engineering Challenge */}
-            {project.challenge && (
-              <div className="p-6 sm:p-8 rounded-3xl bg-amber-500/5 border border-amber-500/20 space-y-3 shadow-xs">
-                <div className="flex items-center gap-2 text-amber-600 font-bold text-sm uppercase tracking-wider">
-                  <ShieldAlert className="size-5" />
-                  <span>{t("challengeTitle")}</span>
-                </div>
-                <p className="text-sm sm:text-base text-foreground/90 leading-relaxed whitespace-pre-line">
-                  {project.challenge}
-                </p>
-              </div>
-            )}
+            {/* Editorial Challenge & Solution (2-Column Grid if both exist, stacked otherwise) */}
+            {(hasChallenge || hasSolution) && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
+                {hasChallenge && (
+                  <div className="p-6 sm:p-8 rounded-3xl bg-amber-500/5 border border-amber-500/20 space-y-3 shadow-xs">
+                    <div className="flex items-center gap-2 text-amber-600 font-bold text-sm uppercase tracking-wider">
+                      <ShieldAlert className="size-5 shrink-0" />
+                      <span>{t("challengeTitle")}</span>
+                    </div>
+                    <p className="text-sm sm:text-base text-foreground/90 leading-relaxed whitespace-pre-line">
+                      {project.challenge}
+                    </p>
+                  </div>
+                )}
 
-            {/* Technical Solution */}
-            {project.solution && (
-              <div className="p-6 sm:p-8 rounded-3xl bg-primary/5 border border-primary/20 space-y-3 shadow-xs">
-                <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider">
-                  <Lightbulb className="size-5" />
-                  <span>{t("solutionTitle")}</span>
-                </div>
-                <p className="text-sm sm:text-base text-foreground/90 leading-relaxed whitespace-pre-line">
-                  {project.solution}
-                </p>
+                {hasSolution && (
+                  <div className="p-6 sm:p-8 rounded-3xl bg-primary/5 border border-primary/20 space-y-3 shadow-xs">
+                    <div className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider">
+                      <Lightbulb className="size-5 shrink-0" />
+                      <span>{t("solutionTitle")}</span>
+                    </div>
+                    <p className="text-sm sm:text-base text-foreground/90 leading-relaxed whitespace-pre-line">
+                      {project.solution}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -81,12 +95,12 @@ export function ProjectDetailOverview({ project }: ProjectDetailOverviewProps) {
                   </div>
                 )}
 
-                {project.categoryName && (
+                {category && (
                   <div className="space-y-1">
                     <span className="text-xs text-muted-foreground uppercase font-bold tracking-wider">
                       {t("categoryLabel")}
                     </span>
-                    <p className="font-semibold text-foreground">{project.categoryName}</p>
+                    <p className="font-semibold text-foreground">{category.name}</p>
                   </div>
                 )}
 

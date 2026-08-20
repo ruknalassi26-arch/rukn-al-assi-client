@@ -9,6 +9,7 @@ import { Wrench, ChevronRight, ChevronLeft, CheckCircle2 } from "lucide-react";
 
 export function ServicesHeroSection() {
   const t = useTranslations("Services");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
   const Chevron = isRtl ? ChevronLeft : ChevronRight;
@@ -18,7 +19,7 @@ export function ServicesHeroSection() {
       {/* Background Hero Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/hero-images/1787126856648-pexels-davidmcelwee-12228684.jpg"
+          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/about/1787128956167-pexels-tuba-sen-2151030023-37707297.jpg"
           alt="Industrial Engineering Services"
           fill
           priority
@@ -39,7 +40,7 @@ export function ServicesHeroSection() {
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium tracking-wide">
             <Link href={`/${locale}`} className="hover:text-amber-400 transition-colors">
-              {locale === "ar" ? "الرئيسية" : locale === "ckb" ? "سەرەکی" : "Home"}
+              {tCommon("home")}
             </Link>
             <Chevron className="size-3.5 opacity-60" />
             <span className="text-amber-400 font-semibold">{t("eyebrow")}</span>
@@ -65,23 +66,11 @@ export function ServicesHeroSection() {
           <div className="flex flex-wrap items-center gap-6 pt-4 text-xs sm:text-sm text-slate-300 font-medium border-t border-white/10">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-amber-400 shrink-0" />
-              <span>
-                {locale === "ar"
-                  ? "صيانة وتركيب معتمد للأنظمة الهيدروليكية"
-                  : locale === "ckb"
-                  ? "چاککردنەوە و دانانی باوەڕپێکراوی هایدرۆلیک"
-                  : "Certified Hydraulic Commissioning & Maintenance"}
-              </span>
+              <span>{t("heroHighlight1")}</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-amber-400 shrink-0" />
-              <span>
-                {locale === "ar"
-                  ? "فريق هندسي متخصص ومعدات صناعية متطورة"
-                  : locale === "ckb"
-                  ? "تیمی ئەندازیاری پسپۆڕ و ئامێری پێشکەوتوو"
-                  : "Expert Engineering Specialists & Advanced Tools"}
-              </span>
+              <span>{t("heroHighlight2")}</span>
             </div>
           </div>
         </div>

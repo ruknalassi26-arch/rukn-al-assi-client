@@ -5,20 +5,26 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
-import { ProjectEntity } from "../../../domain/entities/project.entity";
+import { ProjectDetailInfoEntity } from "../../../domain/entities/project-detail.entity";
+import { ProjectCategoryEntity, ProjectImageEntity } from "../../../domain/entities/project.entity";
 import { Briefcase, ChevronRight, ChevronLeft, MapPin, Building, Calendar, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@shared/components/ui/button";
 
 interface ProjectDetailHeroProps {
-  project: ProjectEntity;
+  project: ProjectDetailInfoEntity;
+  category: ProjectCategoryEntity | null;
+  images: ProjectImageEntity[];
 }
 
-export function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
+export function ProjectDetailHero({ project, category, images }: ProjectDetailHeroProps) {
   const t = useTranslations("Projects");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
   const Chevron = isRtl ? ChevronLeft : ChevronRight;
   const ArrowIcon = isRtl ? ArrowLeft : ArrowRight;
+
+  const coverImage = images.length > 0 ? images[0].imageUrl : "";
 
   return (
     <section className="relative w-full py-16 lg:py-24 overflow-hidden bg-slate-950 text-white border-b border-white/10">
@@ -32,9 +38,10 @@ export function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Text Column */}
           <div className="lg:col-span-7 space-y-6 text-start">
+            {/* Breadcrumbs */}
             <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium tracking-wide">
               <Link href={`/${locale}`} className="hover:text-amber-400 transition-colors">
-                {locale === "ar" ? "الرئيسية" : locale === "ckb" ? "سەرەکی" : "Home"}
+                {tCommon("home")}
               </Link>
               <Chevron className="size-3.5 opacity-60" />
               <Link href={`/${locale}/projects`} className="hover:text-amber-400 transition-colors">
@@ -46,10 +53,10 @@ export function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
               </span>
             </nav>
 
-            {project.categoryName && (
+            {category && (
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur-md">
                 <Briefcase className="size-3.5" />
-                <span>{project.categoryName}</span>
+                <span>{category.name}</span>
               </div>
             )}
 
@@ -96,12 +103,12 @@ export function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
             </div>
           </div>
 
-          {/* Right Hero Image with One-Sided Accent Border */}
+          {/* Right Hero Image (Cinematic 16:9 / 4:3 Ratio with One-Sided Accent Border) */}
           <div className="lg:col-span-5 relative">
-            <div className="relative aspect-4/3 sm:aspect-5/4 lg:aspect-4/3 w-full rounded-3xl overflow-hidden bg-slate-900 shadow-2xl border border-border border-s-6 border-s-primary group">
-              {project.coverImage ? (
+            <div className="relative aspect-16/11 sm:aspect-4/3 w-full rounded-3xl overflow-hidden bg-slate-900 shadow-2xl border border-border border-s-6 border-s-primary group">
+              {coverImage ? (
                 <Image
-                  src={project.coverImage}
+                  src={coverImage}
                   alt={project.title}
                   fill
                   priority

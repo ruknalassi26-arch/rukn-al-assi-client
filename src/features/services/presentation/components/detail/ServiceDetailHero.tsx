@@ -15,6 +15,7 @@ interface ServiceDetailHeroProps {
 
 export function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
   const t = useTranslations("Services");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
   const Chevron = isRtl ? ChevronLeft : ChevronRight;
@@ -34,7 +35,7 @@ export function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
           <div className="lg:col-span-7 space-y-6 text-start">
             <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium tracking-wide">
               <Link href={`/${locale}`} className="hover:text-amber-400 transition-colors">
-                {locale === "ar" ? "الرئيسية" : locale === "ckb" ? "سەرەکی" : "Home"}
+                {tCommon("home")}
               </Link>
               <Chevron className="size-3.5 opacity-60" />
               <Link href={`/${locale}/services`} className="hover:text-amber-400 transition-colors">

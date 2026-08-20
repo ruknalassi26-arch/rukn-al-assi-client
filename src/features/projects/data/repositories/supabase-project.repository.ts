@@ -1,5 +1,6 @@
 import { IProjectRepository, GetProjectsParams } from "../../domain/repositories/i-project.repository";
 import { ProjectEntity, PaginatedProjectsEntity, ProjectCategoryEntity, ProjectClientEntity } from "../../domain/entities/project.entity";
+import { ProjectDetailResponse } from "../../domain/entities/project-detail.entity";
 import { ProjectCategoryDto } from "../dto/project.dto";
 import { createClient } from "@supabase/supabase-js";
 
@@ -52,6 +53,40 @@ interface RpcProjectsResponse {
     totalPages: number;
   };
   language: string;
+}
+
+interface RpcDetailResult {
+  project: {
+    id: string;
+    title: string;
+    slug: string;
+    description: string | null;
+    challenge: string | null;
+    solution: string | null;
+    clientName: string | null;
+    location: string | null;
+    completionDate: string | null;
+    isFeatured: boolean;
+  };
+  category: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  images: Array<{
+    id: string;
+    imageUrl: string;
+    mimeType: string | null;
+    sortOrder: number;
+  }>;
+  relatedProjects: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    image: string | null;
+    category: string | null;
+    location: string | null;
+  }>;
 }
 
 export class SupabaseProjectRepository implements IProjectRepository {
@@ -113,7 +148,6 @@ export class SupabaseProjectRepository implements IProjectRepository {
     const langCode = language === "ckb" ? "ku" : language;
 
     try {
-      // 1. Parallel fetch using public.get_public_projects RPC, categories, and clients
       const [rpcRes, categories, clientsRes] = await Promise.all([
         supabase.rpc("get_public_projects", {
           p_language_code: langCode,
@@ -212,63 +246,127 @@ export class SupabaseProjectRepository implements IProjectRepository {
     }
   }
 
-  async getProjectBySlug(slug: string, language: string): Promise<ProjectEntity | null> {
+  async getProjectDetailBySlug(slug: string, language: string): Promise<ProjectDetailResponse | null> {
     const supabase = this.getSupabase();
     const langCode = language === "ckb" ? "ku" : language;
     const cleanSlug = decodeURIComponent(slug).trim();
 
     try {
-      // Use get_public_projects with search parameter to find matching project by slug or ID
-      const { data, error } = await supabase.rpc("get_public_projects", {
-        p_language_code: langCode,
-        p_page: 1,
-        p_page_size: 1,
-        p_search: cleanSlug,
-        p_category_id: null,
-      });
+      const [rpcRes, clientsRes] = await Promise.all([
+        supabase.rpc("get_public_project_by_slug", {
+          p_language_code: langCode,
+          p_slug: cleanSlug,
+        }),
+        supabase
+          .from("clients")
+          .select(`
+            id,
+            logo_url,
+            website_url,
+            sort_order,
+            client_translations (
+              language_code,
+              name
+            )
+          `)
+          .eq("status", "published")
+          .is("deleted_at", null)
+          .order("sort_order", { ascending: true })
+          .limit(10),
+      ]);
 
-      if (error || !data) {
-        console.warn("[SupabaseProjectRepository] Project not found for slug:", slug, error?.message);
+      if (rpcRes.error || !rpcRes.data) {
+        console.warn("[SupabaseProjectRepository] Error fetching project detail:", slug, rpcRes.error?.message);
         return null;
       }
 
-      const rpcData = data as RpcProjectsResponse;
-      const item = rpcData.items?.find((p) => p.slug === cleanSlug || p.id === cleanSlug) || rpcData.items?.[0];
+      const raw = rpcRes.data as RpcDetailResult;
+      if (!raw.project || !raw.project.id) {
+        return null;
+      }
 
-      if (!item) return null;
+      const clients: ProjectClientEntity[] = (clientsRes.data || []).map((c: ClientRow) => {
+        const trans =
+          (c.client_translations || []).find((t: ClientTranslationRow) => t.language_code === langCode) ||
+          (c.client_translations || []).find((t: ClientTranslationRow) => t.language_code === "en") ||
+          (c.client_translations || [])[0];
 
-      const sortedImages = (item.images || []).sort((a, b) => a.sortOrder - b.sortOrder);
-      const coverImage = sortedImages.length > 0 ? sortedImages[0].imageUrl : "";
+        return {
+          id: c.id,
+          name: trans?.name || "Client Partner",
+          logoUrl: c.logo_url || null,
+          websiteUrl: c.website_url || null,
+        };
+      });
 
       return {
-        id: item.id,
-        categoryId: item.categoryId,
-        categoryName: item.category?.name || null,
-        categorySlug: item.category?.slug || null,
-        clientName: item.clientName,
-        location: item.location,
-        completionDate: item.completionDate,
-        status: "published",
-        isFeatured: item.isFeatured,
-        featuredOrder: item.featuredOrder,
-        sortOrder: item.featuredOrder || 0,
-        slug: item.slug || item.id,
-        title: item.title || "Industrial Project",
-        description: item.description || "",
-        challenge: item.challenge,
-        solution: item.solution,
-        images: sortedImages.map((img) => ({
+        project: {
+          id: raw.project.id,
+          title: raw.project.title || "Engineering Project",
+          slug: raw.project.slug || raw.project.id,
+          description: raw.project.description || null,
+          challenge: raw.project.challenge || null,
+          solution: raw.project.solution || null,
+          clientName: raw.project.clientName || null,
+          location: raw.project.location || null,
+          completionDate: raw.project.completionDate || null,
+          isFeatured: raw.project.isFeatured || false,
+        },
+        category: raw.category
+          ? {
+              id: raw.category.id,
+              name: raw.category.name,
+              slug: raw.category.slug,
+            }
+          : null,
+        images: (raw.images || []).map((img) => ({
           id: img.id,
           imageUrl: img.imageUrl,
           sortOrder: img.sortOrder,
         })),
-        coverImage,
-        createdAt: item.createdAt,
+        relatedProjects: (raw.relatedProjects || []).map((rp) => ({
+          id: rp.id,
+          title: rp.title,
+          slug: rp.slug,
+          image: rp.image || null,
+          category: rp.category || null,
+          location: rp.location || null,
+        })),
+        clients,
       };
     } catch (err) {
-      console.error("[SupabaseProjectRepository] Exception in getProjectBySlug:", err);
+      console.error("[SupabaseProjectRepository] Exception in getProjectDetailBySlug:", err);
       return null;
     }
+  }
+
+  async getProjectBySlug(slug: string, language: string): Promise<ProjectEntity | null> {
+    const detail = await this.getProjectDetailBySlug(slug, language);
+    if (!detail) return null;
+
+    const coverImage = detail.images.length > 0 ? detail.images[0].imageUrl : "";
+
+    return {
+      id: detail.project.id,
+      categoryId: detail.category?.id || null,
+      categoryName: detail.category?.name || null,
+      categorySlug: detail.category?.slug || null,
+      clientName: detail.project.clientName,
+      location: detail.project.location,
+      completionDate: detail.project.completionDate,
+      status: "published",
+      isFeatured: detail.project.isFeatured,
+      featuredOrder: 0,
+      sortOrder: 0,
+      slug: detail.project.slug,
+      title: detail.project.title,
+      description: detail.project.description || "",
+      challenge: detail.project.challenge,
+      solution: detail.project.solution,
+      images: detail.images,
+      coverImage,
+      createdAt: new Date().toISOString(),
+    };
   }
 
   async getRelatedProjects(
@@ -277,56 +375,7 @@ export class SupabaseProjectRepository implements IProjectRepository {
     language: string,
     limit: number = 3
   ): Promise<ProjectEntity[]> {
-    const supabase = this.getSupabase();
-    const langCode = language === "ckb" ? "ku" : language;
-
-    try {
-      const { data, error } = await supabase.rpc("get_public_projects", {
-        p_language_code: langCode,
-        p_page: 1,
-        p_page_size: limit + 1,
-        p_search: null,
-        p_category_id: categoryId || null,
-      });
-
-      if (error || !data) return [];
-
-      const rpcData = data as RpcProjectsResponse;
-      return (rpcData.items || [])
-        .filter((item) => item.id !== currentProjectId)
-        .slice(0, limit)
-        .map((item) => {
-          const sortedImages = (item.images || []).sort((a, b) => a.sortOrder - b.sortOrder);
-          const coverImage = sortedImages.length > 0 ? sortedImages[0].imageUrl : "";
-
-          return {
-            id: item.id,
-            categoryId: item.categoryId,
-            categoryName: item.category?.name || null,
-            categorySlug: item.category?.slug || null,
-            clientName: item.clientName,
-            location: item.location,
-            completionDate: item.completionDate,
-            status: "published",
-            isFeatured: item.isFeatured,
-            featuredOrder: item.featuredOrder,
-            sortOrder: item.featuredOrder || 0,
-            slug: item.slug || item.id,
-            title: item.title || "Industrial Project",
-            description: item.description || "",
-            challenge: item.challenge,
-            solution: item.solution,
-            images: sortedImages.map((img) => ({
-              id: img.id,
-              imageUrl: img.imageUrl,
-              sortOrder: img.sortOrder,
-            })),
-            coverImage,
-            createdAt: item.createdAt,
-          };
-        });
-    } catch {
-      return [];
-    }
+    const projects = await this.getProjects({ page: 1, pageSize: limit + 1, language });
+    return projects.items.filter((p) => p.id !== currentProjectId).slice(0, limit);
   }
 }

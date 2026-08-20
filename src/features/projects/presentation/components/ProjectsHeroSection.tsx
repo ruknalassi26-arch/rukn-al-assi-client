@@ -9,6 +9,7 @@ import { Briefcase, ChevronRight, ChevronLeft, CheckCircle2 } from "lucide-react
 
 export function ProjectsHeroSection() {
   const t = useTranslations("Projects");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
   const Chevron = isRtl ? ChevronLeft : ChevronRight;
@@ -18,7 +19,7 @@ export function ProjectsHeroSection() {
       {/* Background Hero Image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/hero-images/1787126856648-pexels-davidmcelwee-12228684.jpg"
+          src="https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/about/1787128956167-pexels-tuba-sen-2151030023-37707297.jpg"
           alt="Engineering & Hydraulic Projects"
           fill
           priority
@@ -39,7 +40,7 @@ export function ProjectsHeroSection() {
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium tracking-wide">
             <Link href={`/${locale}`} className="hover:text-amber-400 transition-colors">
-              {locale === "ar" ? "الرئيسية" : locale === "ckb" ? "سەرەکی" : "Home"}
+              {tCommon("home")}
             </Link>
             <Chevron className="size-3.5 opacity-60" />
             <span className="text-amber-400 font-semibold">{t("eyebrow")}</span>
@@ -65,23 +66,11 @@ export function ProjectsHeroSection() {
           <div className="flex flex-wrap items-center gap-6 pt-4 text-xs sm:text-sm text-slate-300 font-medium border-t border-white/10">
             <div className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-amber-400 shrink-0" />
-              <span>
-                {locale === "ar"
-                  ? "مشاريع بنية تحتية وصناعية كبرى"
-                  : locale === "ckb"
-                  ? "پڕۆژەی ژێرخانی پیشەسازی قورس"
-                  : "Turnkey Heavy Industrial Infrastructure"}
-              </span>
+              <span>{t("heroHighlight1")}</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle2 className="size-4 text-amber-400 shrink-0" />
-              <span>
-                {locale === "ar"
-                  ? "تنفيذ متكامل وفق أعلى معايير الجودة العالمية"
-                  : locale === "ckb"
-                  ? "جێبەجێکردن بە بەرزترین ستانداردی نێودەوڵەتی"
-                  : "Executed Under International ISO Standards"}
-              </span>
+              <span>{t("heroHighlight2")}</span>
             </div>
           </div>
         </div>
