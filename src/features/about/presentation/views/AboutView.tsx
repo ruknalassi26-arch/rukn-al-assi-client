@@ -1,71 +1,49 @@
 "use client";
 
-import { useAbout } from "../hooks/useAbout";
-import { PageBanner } from "@shared/components/layouts/PageBanner";
-import { Container } from "@shared/components/layouts/Container";
-import { Section } from "@shared/components/layouts/Section";
-import { LoadingScreen } from "@shared/components/layouts/LoadingScreen";
-import { useLocale } from "next-intl";
+import React from "react";
+import { AboutPageEntity } from "../../domain/entities/about-page.entity";
+import { AboutHeroSection } from "../components/AboutHeroSection";
+import { CompanyStorySection } from "../components/CompanyStorySection";
+import { MissionVisionSection } from "../components/MissionVisionSection";
+import { AboutStatsSection } from "../components/AboutStatsSection";
+import { CoreValuesSection } from "../components/CoreValuesSection";
+import { TimelineSection } from "../components/TimelineSection";
+import { TeamSection } from "../components/TeamSection";
+import { AboutCtaSection } from "../components/AboutCtaSection";
 
-export function AboutView() {
-  const { aboutData, isLoading } = useAbout();
-  const locale = useLocale();
+interface AboutViewProps {
+  aboutData: AboutPageEntity;
+}
 
-  if (isLoading || !aboutData) {
-    return <LoadingScreen />;
-  }
-
-  const isAr = locale === "ar";
-
+export function AboutView({ aboutData }: AboutViewProps) {
   return (
-    <main>
-      <PageBanner
-        title={isAr ? "عن شركة ركن العاصي" : "About Rukn Al Assi"}
-        subtitle={
-          isAr
-            ? "تعرف على رؤيتنا، رسالتنا، والتزامنا بأعلى معايير التميز الهندسي والمقاولات."
-            : "Learn about our vision, mission, and dedication to construction & industrial engineering excellence."
-        }
-        breadcrumbItems={[{ label: isAr ? "عن الشركة" : "About Us" }]}
-      />
-      <Section>
-        <Container className="space-y-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="p-8 border rounded-2xl bg-card shadow-sm space-y-4">
-              <h2 className="text-2xl font-bold text-primary">
-                {isAr ? "رؤيتنا" : "Our Vision"}
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {isAr ? aboutData.visionAr : aboutData.visionEn}
-              </p>
-            </div>
-            <div className="p-8 border rounded-2xl bg-card shadow-sm space-y-4">
-              <h2 className="text-2xl font-bold text-primary">
-                {isAr ? "رسالتنا" : "Our Mission"}
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                {isAr ? aboutData.missionAr : aboutData.missionEn}
-              </p>
-            </div>
-          </div>
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* 1. About Hero */}
+      <AboutHeroSection />
 
-          <div className="p-8 border rounded-2xl bg-muted/40 space-y-6">
-            <h2 className="text-2xl font-bold text-center">
-              {isAr ? "قيمنا الجوهرية" : "Our Core Values"}
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              {(isAr ? aboutData.valuesAr : aboutData.valuesEn).map((val, idx) => (
-                <div
-                  key={idx}
-                  className="p-4 bg-background border rounded-xl font-semibold text-foreground shadow-xs"
-                >
-                  {val}
-                </div>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </Section>
-    </main>
+      {/* 2. Company Story & History */}
+      <CompanyStorySection history={aboutData.company?.history} />
+
+      {/* 3. Mission & Vision */}
+      <MissionVisionSection
+        mission={aboutData.company?.mission}
+        vision={aboutData.company?.vision}
+      />
+
+      {/* 4. Statistics Trust Strip */}
+      <AboutStatsSection stats={aboutData.stats} />
+
+      {/* 5. Core Values */}
+      <CoreValuesSection coreValues={aboutData.coreValues} />
+
+      {/* 6. Timeline Milestones */}
+      <TimelineSection timeline={aboutData.timeline} />
+
+      {/* 7. Leadership / Team */}
+      <TeamSection team={aboutData.team} />
+
+      {/* 8. Closing Call to Action */}
+      <AboutCtaSection />
+    </div>
   );
 }

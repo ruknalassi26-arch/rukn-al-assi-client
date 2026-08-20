@@ -1,5 +1,5 @@
-import { AboutCompanyEntity } from "../entities/about.entity";
+import { AboutPageEntity } from "../entities/about-page.entity";
 
 export interface IAboutRepository {
-  getCompanyOverview(): Promise<AboutCompanyEntity>;
+  getAboutPageData(locale: string): Promise<AboutPageEntity>;
 }

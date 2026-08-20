@@ -245,7 +245,7 @@ export class HomeMapper {
           locale === "ar" ? "تجهيزات هيدروليكية ومعدات متطورة" : locale === "ckb" ? "ئامێر و کەرەستەی پێشکەوتووی هایدرۆلیکی" : "Advanced Hydraulic Equipment & Systems",
         ];
 
-    const aboutImageUrl = this.getStringSetting(aboutSettings, "image_url") || null;
+    const aboutImageUrl = this.getStringSetting(aboutSettings, "image_url") || "https://pgslnuvcpwkhqcfiflpi.supabase.co/storage/v1/object/public/branding/about/1787128956167-pexels-tuba-sen-2151030023-37707297.jpg";
 
     const about: AboutPreviewEntity = {
       eyebrow: locale === "ar" ? "عن الشركة" : locale === "ckb" ? "دەربارەی ئێمە" : "About Rukn Al Assi",
