@@ -11,6 +11,13 @@ export interface ServiceFaqEntity {
   sortOrder: number;
 }
 
+export interface ClientItemEntity {
+  id: string;
+  name: string;
+  logoUrl: string | null;
+  websiteUrl: string | null;
+}
+
 export interface ServiceEntity {
   id: string;
   icon: string | null;
@@ -30,6 +37,7 @@ export interface ServiceEntity {
 
 export interface PaginatedServicesEntity {
   items: ServiceEntity[];
+  clients: ClientItemEntity[];
   total: number;
   page: number;
   pageSize: number;
