@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLocale } from "next-intl";
 import { usePathname, useRouter } from "next/navigation";
-import { Globe, Check, ChevronDown } from "lucide-react";
+import { Globe, Check, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@core/utils/cn";
 import { LanguageEntity } from "@features/home/domain/entities/home.entity";
 
@@ -30,12 +30,28 @@ export function LanguageSwitcher({
       ? languages
       : [
           {
-            code: locale,
-            name: locale.toUpperCase(),
-            nativeName: locale === "ar" ? "العربية" : locale === "ckb" ? "کوردی" : "English",
-            isRtl: locale === "ar" || locale === "ckb",
+            code: "ar",
+            name: "Arabic",
+            nativeName: "العربية",
+            isRtl: true,
             isDefault: false,
             sortOrder: 1,
+          },
+          {
+            code: "en",
+            name: "English",
+            nativeName: "English",
+            isRtl: false,
+            isDefault: true,
+            sortOrder: 2,
+          },
+          {
+            code: "ckb",
+            name: "Kurdish",
+            nativeName: "کوردی",
+            isRtl: true,
+            isDefault: false,
+            sortOrder: 3,
           },
         ];
 
@@ -76,7 +92,8 @@ export function LanguageSwitcher({
     router.push(newPath);
   };
 
-  const isDarkVariant = variant === "topbar";
+  const isDark = variant === "topbar" || variant === "footer";
+  const isDropUp = variant === "footer";
 
   return (
     <div className={cn("relative inline-block text-start", className)} ref={dropdownRef}>
@@ -84,33 +101,45 @@ export function LanguageSwitcher({
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className={cn(
-          "inline-flex items-center gap-2 px-2.5 py-1 rounded-md text-xs font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary",
-          isDarkVariant
-            ? "text-slate-300 hover:text-white hover:bg-white/10 border border-white/10"
-            : "text-foreground/90 hover:text-primary hover:bg-muted/80 border border-border"
+          "inline-flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer",
+          isDark
+            ? "text-slate-300 hover:text-white hover:bg-white/10 border border-white/15 bg-white/5"
+            : "text-foreground/90 hover:text-primary hover:bg-muted/80 border border-border bg-card"
         )}
         aria-expanded={isOpen}
         aria-haspopup="true"
         aria-label="Change Language"
       >
-        <Globe className={cn("size-3.5 shrink-0", isDarkVariant ? "text-slate-400" : "text-primary")} />
+        <Globe className={cn("size-3.5 shrink-0", isDark ? "text-amber-400" : "text-primary")} />
         <span>{currentLang.nativeName}</span>
-        <ChevronDown
-          className={cn(
-            "size-3 opacity-60 transition-transform duration-200",
-            isOpen && "rotate-180"
-          )}
-        />
+        {isDropUp ? (
+          <ChevronUp
+            className={cn(
+              "size-3 opacity-60 transition-transform duration-200",
+              isOpen && "rotate-180"
+            )}
+          />
+        ) : (
+          <ChevronDown
+            className={cn(
+              "size-3 opacity-60 transition-transform duration-200",
+              isOpen && "rotate-180"
+            )}
+          />
+        )}
       </button>
 
       {isOpen && (
         <div
           role="menu"
           className={cn(
-            "absolute end-0 mt-2 w-44 origin-top-right rounded-xl p-1.5 shadow-2xl ring-1 focus:outline-none z-100 animate-in fade-in zoom-in-95 duration-150",
-            isDarkVariant
-              ? "bg-slate-900/98 backdrop-blur-xl ring-white/15 text-slate-200 divide-y divide-white/5"
-              : "bg-card/98 backdrop-blur-xl ring-border text-card-foreground divide-y divide-border/40"
+            "absolute end-0 w-44 rounded-xl p-1.5 shadow-2xl ring-1 focus:outline-none z-50 animate-in fade-in zoom-in-95 duration-150 border",
+            isDropUp
+              ? "bottom-full mb-2 origin-bottom-right"
+              : "top-full mt-2 origin-top-right",
+            isDark
+              ? "bg-slate-900/98 backdrop-blur-2xl ring-white/15 border-white/15 text-slate-200"
+              : "bg-card/98 backdrop-blur-2xl ring-border border-border text-card-foreground shadow-lg"
           )}
         >
           <div className="space-y-0.5">
@@ -123,12 +152,12 @@ export function LanguageSwitcher({
                   role="menuitem"
                   onClick={() => switchLanguage(lang.code)}
                   className={cn(
-                    "w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-colors text-start",
+                    "w-full flex items-center justify-between px-3 py-2 text-xs font-medium rounded-lg transition-colors text-start cursor-pointer",
                     isSelected
-                      ? isDarkVariant
-                        ? "bg-primary text-white font-bold shadow-xs"
+                      ? isDark
+                        ? "bg-primary text-white font-bold shadow-sm"
                         : "bg-primary/10 text-primary font-bold"
-                      : isDarkVariant
+                      : isDark
                       ? "hover:bg-white/10 hover:text-white text-slate-300"
                       : "hover:bg-muted text-foreground/80 hover:text-foreground"
                   )}
@@ -139,18 +168,18 @@ export function LanguageSwitcher({
                       className={cn(
                         "text-[10px] uppercase font-mono px-1 py-0.5 rounded",
                         isSelected
-                          ? isDarkVariant
+                          ? isDark
                             ? "bg-white/20 text-white"
                             : "bg-primary/20 text-primary"
-                          : isDarkVariant
-                          ? "text-slate-400"
-                          : "text-muted-foreground"
+                          : isDark
+                          ? "text-slate-400 bg-white/5"
+                          : "text-muted-foreground bg-muted"
                       )}
                     >
                       {lang.code}
                     </span>
                   </div>
-                  {isSelected && <Check className="size-3.5 shrink-0" />}
+                  {isSelected && <Check className="size-3.5 shrink-0 text-amber-400" />}
                 </button>
               );
             })}

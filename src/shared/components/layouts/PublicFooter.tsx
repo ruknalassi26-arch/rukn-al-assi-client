@@ -262,7 +262,7 @@ export function PublicFooter({ brandSettings, languages }: PublicFooterProps) {
               {tCommon("termsOfService")}
             </Link>
             <span>•</span>
-            <LanguageSwitcher variant="topbar" languages={languages} />
+            <LanguageSwitcher variant="footer" languages={languages} />
           </div>
         </div>
       </Container>
