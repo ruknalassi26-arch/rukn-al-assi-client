@@ -1,5 +1,12 @@
-import { ClientEntity } from "../entities/client.entity";
+import { PaginatedClientsEntity } from "../entities/client.entity";
+
+export interface GetClientsParams {
+  page?: number;
+  pageSize?: number;
+  search?: string;
+  language?: string;
+}
 
 export interface IClientRepository {
-  getClients(): Promise<ClientEntity[]>;
+  getClients(params: GetClientsParams): Promise<PaginatedClientsEntity>;
 }

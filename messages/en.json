@@ -235,5 +235,23 @@
     "ctaSecondaryButton": "Contact Engineering Team",
     "heroHighlight1": "Turnkey Heavy Industrial Infrastructure",
     "heroHighlight2": "Executed Under International ISO Standards"
+  },
+  "Clients": {
+    "eyebrow": "Our Trusted Partners",
+    "title": "Trusted by Industry Leaders Across Iraq & the Region",
+    "subtitle": "We proudly partner with leading public and private enterprises to deliver heavy industrial infrastructure, hydraulic engineering, and specialized contracting.",
+    "heroHighlight1": "Long-Term Strategic Industrial Partnerships",
+    "heroHighlight2": "Proven Execution on Critical Infrastructure",
+    "searchPlaceholder": "Search client or partner organization...",
+    "totalResults": "{count} Partners & Clients",
+    "clearSearch": "Clear Search",
+    "noResultsTitle": "No Client Partners Found",
+    "noResultsDesc": "We couldn't find any clients matching your search criteria. Try a different search term.",
+    "visitWebsite": "Visit Website",
+    "ctaEyebrow": "Partner With Us",
+    "ctaTitle": "Ready to Build a High-Reliability Industrial Partnership?",
+    "ctaSubtitle": "Reach out to our engineering management to discuss industrial supply, specialized contracting, or ongoing maintenance contracts.",
+    "ctaButton": "Request a Quote",
+    "titleShort": "Clients & Partners"
   }
 }
