@@ -1,6 +1,0 @@
-export enum ProjectCategory {
-  CIVIL = "CIVIL",
-  INFRASTRUCTURE = "INFRASTRUCTURE",
-  INDUSTRIAL = "INDUSTRIAL",
-  COMMERCIAL = "COMMERCIAL",
-}

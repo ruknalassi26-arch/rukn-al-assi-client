@@ -5,16 +5,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
-import { ServiceEntity } from "../../../domain/entities/service.entity";
-import { Wrench, ChevronRight, ChevronLeft, ArrowRight, ArrowLeft } from "lucide-react";
+import { ProjectEntity } from "../../../domain/entities/project.entity";
+import { Briefcase, ChevronRight, ChevronLeft, MapPin, Building, Calendar, ArrowRight, ArrowLeft } from "lucide-react";
 import { Button } from "@shared/components/ui/button";
 
-interface ServiceDetailHeroProps {
-  service: ServiceEntity;
+interface ProjectDetailHeroProps {
+  project: ProjectEntity;
 }
 
-export function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
-  const t = useTranslations("Services");
+export function ProjectDetailHero({ project }: ProjectDetailHeroProps) {
+  const t = useTranslations("Projects");
   const locale = useLocale();
   const isRtl = locale === "ar" || locale === "ckb";
   const Chevron = isRtl ? ChevronLeft : ChevronRight;
@@ -30,34 +30,54 @@ export function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
 
       <Container className="relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Left Text */}
+          {/* Left Text Column */}
           <div className="lg:col-span-7 space-y-6 text-start">
             <nav className="flex items-center gap-2 text-xs text-slate-400 font-medium tracking-wide">
               <Link href={`/${locale}`} className="hover:text-amber-400 transition-colors">
                 {locale === "ar" ? "الرئيسية" : locale === "ckb" ? "سەرەکی" : "Home"}
               </Link>
               <Chevron className="size-3.5 opacity-60" />
-              <Link href={`/${locale}/services`} className="hover:text-amber-400 transition-colors">
+              <Link href={`/${locale}/projects`} className="hover:text-amber-400 transition-colors">
                 {t("titleShort")}
               </Link>
               <Chevron className="size-3.5 opacity-60" />
               <span className="text-amber-400 font-semibold truncate max-w-[200px]">
-                {service.name}
+                {project.title}
               </span>
             </nav>
 
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur-md">
-              <Wrench className="size-3.5" />
-              <span>{service.isFeatured ? "Featured Capability" : "Industrial Solution"}</span>
-            </div>
+            {project.categoryName && (
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur-md">
+                <Briefcase className="size-3.5" />
+                <span>{project.categoryName}</span>
+              </div>
+            )}
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight text-white leading-tight">
-              {service.name}
+              {project.title}
             </h1>
 
-            <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
-              {service.description}
-            </p>
+            {/* Quick Meta Strip */}
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-300 font-medium pt-1">
+              {project.location && (
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="size-4 text-amber-400 shrink-0" />
+                  <span>{project.location}</span>
+                </div>
+              )}
+              {project.clientName && (
+                <div className="flex items-center gap-1.5">
+                  <Building className="size-4 text-amber-400 shrink-0" />
+                  <span>{project.clientName}</span>
+                </div>
+              )}
+              {project.completionDate && (
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="size-4 text-amber-400 shrink-0" />
+                  <span>{project.completionDate}</span>
+                </div>
+              )}
+            </div>
 
             <div className="pt-2">
               <Button
@@ -66,7 +86,7 @@ export function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
                 className="h-12 px-7 text-sm font-bold bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30"
               >
                 <Link
-                  href={`/${locale}/rfq?service=${encodeURIComponent(service.name)}`}
+                  href={`/${locale}/rfq?project=${encodeURIComponent(project.title)}`}
                   className="flex items-center gap-2"
                 >
                   <span>{t("requestQuote")}</span>
@@ -76,13 +96,13 @@ export function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
             </div>
           </div>
 
-          {/* Right Image with One-Sided Accent Border */}
+          {/* Right Hero Image with One-Sided Accent Border */}
           <div className="lg:col-span-5 relative">
             <div className="relative aspect-4/3 sm:aspect-5/4 lg:aspect-4/3 w-full rounded-3xl overflow-hidden bg-slate-900 shadow-2xl border border-border border-s-6 border-s-primary group">
-              {service.heroImageUrl ? (
+              {project.coverImage ? (
                 <Image
-                  src={service.heroImageUrl}
-                  alt={service.name}
+                  src={project.coverImage}
+                  alt={project.title}
                   fill
                   priority
                   sizes="(max-width: 1024px) 100vw, 40vw"
@@ -90,7 +110,7 @@ export function ServiceDetailHero({ service }: ServiceDetailHeroProps) {
                 />
               ) : (
                 <div className="size-full flex items-center justify-center bg-slate-800 text-slate-500">
-                  <Wrench className="size-16 opacity-40" />
+                  <Briefcase className="size-16 opacity-40" />
                 </div>
               )}
               <div className="absolute inset-0 bg-linear-to-t from-slate-950/60 via-transparent to-transparent" />
