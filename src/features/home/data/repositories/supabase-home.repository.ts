@@ -21,17 +21,28 @@ export class SupabaseHomeRepository implements IHomeRepository {
     const supabase = this.getSupabase();
 
     try {
-      // 1. Single Server-Side Database RPC Call
-      const { data, error } = await supabase.rpc("get_public_homepage");
+      // 1. Fetch RPC and Settings table in parallel
+      const [rpcRes, settingsRes] = await Promise.all([
+        supabase.rpc("get_public_homepage"),
+        supabase.from("settings").select("key, value"),
+      ]);
 
-      if (error || !data) {
-        console.warn("[SupabaseHomeRepository] RPC error or empty data:", error?.message);
-        return HomeMapper.toEntity({}, locale);
+      const rpcData = (rpcRes.data || {}) as PublicHomepageRpcDto;
+
+      // 2. Map database settings table rows into a key-value dictionary
+      if (settingsRes.data && Array.isArray(settingsRes.data)) {
+        const settingsMap: Record<string, string> = {};
+        for (const row of settingsRes.data) {
+          if (row.key && typeof row.value === "string") {
+            settingsMap[row.key] = row.value;
+          }
+        }
+        rpcData.settings = { ...settingsMap, ...(rpcData.settings || {}) };
       }
 
-      return HomeMapper.toEntity(data as PublicHomepageRpcDto, locale);
+      return HomeMapper.toEntity(rpcData, locale);
     } catch (err) {
-      console.error("[SupabaseHomeRepository] Exception calling get_public_homepage:", err);
+      console.error("[SupabaseHomeRepository] Exception calling homepage data:", err);
       return HomeMapper.toEntity({}, locale);
     }
   }

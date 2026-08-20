@@ -5,7 +5,14 @@ import { createMiddlewareClient } from "@core/lib/supabase/middleware";
 
 const intlMiddleware = createMiddleware(routing);
 
-const PUBLIC_EXCLUDE_PATHS = ["/api", "/_next", "/favicon.ico", "/robots.txt", "/sitemap.xml"];
+const PUBLIC_EXCLUDE_PATHS = [
+  "/api",
+  "/_next",
+  "/.well-known",
+  "/favicon.ico",
+  "/robots.txt",
+  "/sitemap.xml",
+];
 
 function isExcludedPath(pathname: string): boolean {
   return PUBLIC_EXCLUDE_PATHS.some((path) => pathname.startsWith(path));
@@ -29,6 +36,6 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|json)$).*)",
   ],
 };
