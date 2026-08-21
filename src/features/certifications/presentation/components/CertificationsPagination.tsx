@@ -6,12 +6,12 @@ import { useLocale, useTranslations } from "next-intl";
 import { Button } from "@shared/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-interface ClientsPaginationProps {
+interface CertificationsPaginationProps {
   page: number;
   totalPages: number;
 }
 
-export function ClientsPagination({ page, totalPages }: ClientsPaginationProps) {
+export function CertificationsPagination({ page, totalPages }: CertificationsPaginationProps) {
   const tCommon = useTranslations("Common");
   const router = useRouter();
   const pathname = usePathname();
@@ -45,7 +45,7 @@ export function ClientsPagination({ page, totalPages }: ClientsPaginationProps) 
           <span>{tCommon("previous")}</span>
         </Button>
 
-        {/* Page Indicators */}
+        {/* Page Numbers */}
         <div className="flex items-center gap-1.5 px-2">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => {
             const isActive = p === page;

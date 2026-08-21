@@ -11,7 +11,8 @@ export const ROUTES = {
   RFQ: "/rfq",
   CLIENTS: "/clients",
   GALLERY: "/gallery",
-  CERTIFICATES: "/certificates",
+  CERTIFICATIONS: "/certifications",
+  CERTIFICATES: "/certifications",
   PRIVACY_POLICY: "/privacy-policy",
   TERMS: "/terms",
 } as const;

@@ -9,7 +9,8 @@
     "rfq": "Request for Quote",
     "clients": "Clients",
     "gallery": "Gallery",
-    "certificates": "Certificates"
+    "certificates": "Certificates",
+    "certifications": "Certifications"
   },
   "Common": {
     "learnMore": "Learn More",
@@ -43,7 +44,9 @@
     "highResShowcase": "High-Resolution Showcase",
     "gallerySubtitle": "Click on any photograph to inspect construction details in high-resolution full-screen mode.",
     "ourMission": "Our Mission",
-    "ourVision": "Our Vision"
+    "ourVision": "Our Vision",
+    "previous": "Previous",
+    "next": "Next"
   },
   "Header": {
     "topBarTagline": "Leading Contracting & Industrial Hydraulic Solutions",
@@ -253,5 +256,25 @@
     "ctaSubtitle": "Reach out to our engineering management to discuss industrial supply, specialized contracting, or ongoing maintenance contracts.",
     "ctaButton": "Request a Quote",
     "titleShort": "Clients & Partners"
+  },
+  "Certifications": {
+    "eyebrow": "Quality & Compliance",
+    "title": "Certified Engineering & Industrial Standards",
+    "subtitle": "Our operations, manufacturing processes, and hydraulic installations adhere strictly to international quality management and industrial safety certifications.",
+    "heroHighlight1": "ISO 9001:2015 Quality Management Certified",
+    "heroHighlight2": "Rigorous Industrial Safety & Compliance Audits",
+    "issuedBy": "Issued By",
+    "issuedDate": "Issue Date",
+    "viewDocument": "View Certificate",
+    "close": "Close",
+    "totalCount": "{count} Official Certifications",
+    "emptyTitle": "No Certifications Published",
+    "emptyDesc": "Official quality and compliance certificates will be listed here.",
+    "trustCtaEyebrow": "Verified Quality Standards",
+    "trustCtaTitle": "Built on Recognized International Standards & Industrial Excellence",
+    "trustCtaSubtitle": "Partner with a certified engineering team equipped to deliver turnkey hydraulic and industrial solutions compliant with all regulatory requirements.",
+    "requestQuote": "Request a Quote",
+    "contactUs": "Contact Engineering Team",
+    "titleShort": "Certifications"
   }
 }

@@ -53,7 +53,7 @@ export function PublicHeader({ languages = [], brandSettings }: PublicHeaderProp
     { href: `/${locale}/projects`, label: tNav("projects") },
     { href: `/${locale}/products`, label: tNav("products") },
     { href: `/${locale}/clients`, label: tNav("clients") },
-    { href: `/${locale}/certificates`, label: tNav("certificates") },
+    { href: `/${locale}/certifications`, label: tNav("certificates") },
     { href: `/${locale}/contact`, label: tNav("contact") },
   ];
 
