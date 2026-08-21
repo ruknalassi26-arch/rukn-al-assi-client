@@ -1,142 +1,88 @@
 "use client";
 
-import { useContact } from "../hooks/useContact";
-import { PageBanner } from "@shared/components/layouts/PageBanner";
+import React, { useState } from "react";
+import { useTranslations } from "next-intl";
 import { Container } from "@shared/components/layouts/Container";
-import { Section } from "@shared/components/layouts/Section";
-import { Button } from "@shared/components/ui/button";
-import { Input } from "@shared/components/ui/input";
-import { useLocale } from "next-intl";
-import { useState } from "react";
-import { toast } from "sonner";
+import { ContactPageEntity, BranchEntity } from "../../domain/entities/contact.entity";
+import { ContactHeroSection } from "../components/ContactHeroSection";
+import { ContactInfoSection } from "../components/ContactInfoSection";
+import { BranchCard } from "../components/BranchCard";
+import { ContactMap } from "../components/ContactMap";
+import { ContactForm } from "../components/ContactForm";
+import { ContactCtaSection } from "../components/ContactCtaSection";
+import { Building2 } from "lucide-react";
 
-export function ContactView() {
-  const { submitContactForm, isSubmitting, isSubmitted } = useContact();
-  const locale = useLocale();
-  const isAr = locale === "ar";
+interface ContactViewProps {
+  data: ContactPageEntity;
+}
 
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    subject: "",
-    message: "",
-  });
+export function ContactView({ data }: ContactViewProps) {
+  const t = useTranslations("Contact");
+  const branches = data?.branches || [];
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.fullName || !formData.email || !formData.message) {
-      toast.error(isAr ? "يرجى تعبئة الحقول المطلوبة" : "Please fill required fields");
-      return;
-    }
-    await submitContactForm(formData);
-    toast.success(isAr ? "تم إرسال الرسالة بنجاح!" : "Message sent successfully!");
-  };
+  // Default to first branch with map coordinates if available
+  const defaultBranch = branches.find((b) => b.mapLat !== null && b.mapLng !== null) || branches[0] || null;
+  const [selectedBranch, setSelectedBranch] = useState<BranchEntity | null>(defaultBranch);
 
   return (
-    <main>
-      <PageBanner
-        title={isAr ? "تواصل معنا" : "Contact Us"}
-        subtitle={
-          isAr
-            ? "نحن هنا للإجابة على جميع استفساراتكم والبدء في تقديم خدماتنا لكم."
-            : "Get in touch with our team for inquiries, consultations, or office visits."
-        }
-        breadcrumbItems={[{ label: isAr ? "اتصل بنا" : "Contact Us" }]}
-      />
-      <Section>
+    <div className="flex flex-col min-h-screen bg-background">
+      {/* 1. Contact Hero */}
+      <ContactHeroSection />
+
+      {/* 2. Main 2-Column Section (Desktop: Left Info + Branches + Map, Right Contact Form) */}
+      <section className="py-16 lg:py-24 bg-background">
         <Container>
-          <div className="max-w-xl mx-auto p-8 border rounded-2xl bg-card shadow-sm space-y-6">
-            {isSubmitted ? (
-              <div className="text-center py-8 space-y-3">
-                <h3 className="text-2xl font-bold text-emerald-600">
-                  {isAr ? "شكراً لتواصلك معنا!" : "Thank You for Reaching Out!"}
-                </h3>
-                <p className="text-muted-foreground text-sm">
-                  {isAr
-                    ? "تم استلام رسالتك وسيقوم فريقنا بالتواصل معك في أقرب وقت."
-                    : "Your message has been received. Our team will get back to you shortly."}
-                </p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">
-                    {isAr ? "الاسم الكامل *" : "Full Name *"}
-                  </label>
-                  <Input
-                    required
-                    value={formData.fullName}
-                    onChange={(e) =>
-                      setFormData({ ...formData, fullName: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            {/* Left Column: Direct Info + Branches List + Map */}
+            <div className="lg:col-span-6 xl:col-span-6 space-y-8">
+              {/* Direct Info */}
+              <ContactInfoSection />
+
+              {/* Branches / Locations */}
+              {branches.length > 0 && (
+                <div className="space-y-4">
                   <div className="space-y-1">
-                    <label className="text-sm font-medium">
-                      {isAr ? "البريد الإلكتروني *" : "Email Address *"}
-                    </label>
-                    <Input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
-                    />
+                    <div className="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider">
+                      <Building2 className="size-3.5" />
+                      <span>{t("branchesTitle")}</span>
+                    </div>
+                    <h3 className="text-xl sm:text-2xl font-black text-foreground">
+                      {t("branchesTitle")}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {t("branchesSubtitle")}
+                    </p>
                   </div>
-                  <div className="space-y-1">
-                    <label className="text-sm font-medium">
-                      {isAr ? "رقم الهاتف" : "Phone Number"}
-                    </label>
-                    <Input
-                      value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
-                    />
+
+                  <div className="space-y-4">
+                    {branches.map((branch) => (
+                      <BranchCard
+                        key={branch.id}
+                        branch={branch}
+                        isSelected={selectedBranch?.id === branch.id}
+                        onSelect={() => setSelectedBranch(branch)}
+                      />
+                    ))}
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">
-                    {isAr ? "الموضوع" : "Subject"}
-                  </label>
-                  <Input
-                    value={formData.subject}
-                    onChange={(e) =>
-                      setFormData({ ...formData, subject: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-sm font-medium">
-                    {isAr ? "الرسالة *" : "Message *"}
-                  </label>
-                  <textarea
-                    required
-                    rows={4}
-                    className="flex w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
-                    value={formData.message}
-                    onChange={(e) =>
-                      setFormData({ ...formData, message: e.target.value })
-                    }
-                  />
-                </div>
-                <Button type="submit" disabled={isSubmitting} className="w-full">
-                  {isSubmitting
-                    ? isAr
-                      ? "جاري الإرسال..."
-                      : "Sending..."
-                    : isAr
-                      ? "إرسال الرسالة"
-                      : "Send Message"}
-                </Button>
-              </form>
-            )}
+              )}
+
+              {/* Interactive Map */}
+              {selectedBranch && (
+                <ContactMap selectedBranch={selectedBranch} />
+              )}
+            </div>
+
+            {/* Right Column: Contact Form */}
+            <div className="lg:col-span-6 xl:col-span-6 sticky top-24">
+              <ContactForm />
+            </div>
           </div>
         </Container>
-      </Section>
-    </main>
+      </section>
+
+      {/* 3. Request Quote CTA */}
+      <ContactCtaSection />
+    </div>
   );
 }

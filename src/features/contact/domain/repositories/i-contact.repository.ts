@@ -1,5 +1,10 @@
-import { ContactMessageEntity } from "../entities/contact.entity";
+import {
+  ContactPageEntity,
+  ContactMessageInputEntity,
+  ContactSubmitResultEntity,
+} from "../entities/contact.entity";
 
 export interface IContactRepository {
-  sendMessage(message: ContactMessageEntity): Promise<boolean>;
+  getContactPage(language?: string): Promise<ContactPageEntity>;
+  submitMessage(input: ContactMessageInputEntity): Promise<ContactSubmitResultEntity>;
 }
