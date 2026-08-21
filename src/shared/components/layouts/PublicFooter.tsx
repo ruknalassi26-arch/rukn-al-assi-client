@@ -44,6 +44,7 @@ export function PublicFooter({ brandSettings, languages }: PublicFooterProps) {
     { href: `/${locale}/products`, label: tNav("products") },
     { href: `/${locale}/clients`, label: tNav("clients") },
     { href: `/${locale}/certifications`, label: tNav("certificates") },
+    { href: `/${locale}/careers`, label: tNav("careers") },
     { href: `/${locale}/contact`, label: tNav("contact") },
   ];
 
